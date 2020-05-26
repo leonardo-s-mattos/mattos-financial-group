@@ -1,13 +1,13 @@
-server:
-  port: 8081
 spring:
   application:
-    name: config
+    name: zipkin
   cloud:
     config:
-      server:
-        git:
-          uri: file://${user.home}/application-config
+      discovery:
+        service-id: config
+        enabled: true
+      username: configUser
+      password: configPassword
 eureka:
   client:
     region: default
