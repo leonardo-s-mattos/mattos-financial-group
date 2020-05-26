@@ -6,7 +6,7 @@
 		<groupId>com.mattos.fintech</groupId>
 		<artifactId>parent</artifactId>
 		<version>0.9</version>
-		<relativePath>../..</relativePath> 
+		<relativePath>../..</relativePath>
 	</parent>
 	<groupId>com.mattos.fintech</groupId>
 	<artifactId>api-gateway-server</artifactId>
