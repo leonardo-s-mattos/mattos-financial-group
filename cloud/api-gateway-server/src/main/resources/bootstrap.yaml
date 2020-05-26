@@ -5,9 +5,10 @@ spring:
     name: gateway
   cloud:
     config:
-      server:
-        git:
-          uri: file://${user.home}/application-config
+      name: gateway
+      discovery:
+        service-id: config
+        enabled: true
 eureka:
   client:
     region: default
