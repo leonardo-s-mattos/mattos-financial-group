@@ -33,9 +33,4 @@ public class CreditCardAccount extends Account {
         return issuerCompany.MII() + IIN() + random.substring(random.length()-10);
     }
 
-    public String getCreditCardNumber(){
-        return super.getAccountNumber();
-    }
-
-
 }

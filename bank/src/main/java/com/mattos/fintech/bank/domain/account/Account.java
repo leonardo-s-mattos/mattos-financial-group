@@ -25,7 +25,7 @@ public abstract class Account {
         this.accountNumber = accountNumber;
     }
 
-    protected String getAccountNumber(){
+    public String getAccountNumber(){
         return accountNumber;
     }
 
