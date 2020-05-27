@@ -13,16 +13,29 @@ public abstract class Account {
     private String name;
     private AccountHolder accountHolder;
 
-    public Account(AccountType accountType, AccountState state, String name, AccountHolder accountHolder) {
+    public Account(){
+
+    }
+
+    public Account(AccountType accountType, String name, AccountHolder accountHolder) {
+        this.accountType = accountType;
+        this.name = name;
+        this.accountHolder = accountHolder;
+    }
+
+    public Account(String accountNumber, AccountType accountType, String name, AccountHolder accountHolder) {
         this.accountNumber = accountNumber;
         this.accountType = accountType;
-        this.state = state;
         this.name = name;
         this.accountHolder = accountHolder;
     }
 
     protected void withNumber(String accountNumber){
         this.accountNumber = accountNumber;
+    }
+
+    public void withState(AccountState state){
+        this.state = state;
     }
 
     public String getAccountNumber(){
@@ -33,5 +46,19 @@ public abstract class Account {
         return Strings.repeat("*", accountNumber.length()-4) + accountNumber.substring(accountNumber.length()-4);
     }
 
+    public AccountType getAccountType() {
+        return accountType;
+    }
 
+    public AccountState getState() {
+        return state;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public AccountHolder getAccountHolder() {
+        return accountHolder;
+    }
 }

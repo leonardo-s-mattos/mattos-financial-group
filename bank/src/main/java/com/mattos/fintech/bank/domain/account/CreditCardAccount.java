@@ -13,15 +13,32 @@ public class CreditCardAccount extends Account {
     private Integer goodThroughYear;
 
     public CreditCardAccount(String name, AccountHolder accountHolder) {
-        super(AccountType.CREDIT_CARD, AccountState.OPEN, name, accountHolder);
+        super(AccountType.CREDIT_CARD, name, accountHolder);
+        withState(AccountState.OPEN);
         ccvCode = new Random().nextInt(1000);
         goodThroughMonth = LocalDate.now().getMonthValue();
         goodThroughYear = LocalDate.now().getYear() + 4;
     }
 
+    public CreditCardAccount(String accountNumber, String name, AccountHolder accountHolder) {
+        super(accountNumber, AccountType.CREDIT_CARD, name, accountHolder);
+    }
+
     public void withIssuer(IssuerCompany issuerCompany){
         this.issuerCompany = issuerCompany;
         super.withNumber(generateAccountNumbers(issuerCompany));
+    }
+
+    public void withCcvCode(Integer ccvCode) {
+        this.ccvCode = ccvCode;
+    }
+
+    public void withGoodThroughMonth(Integer goodThroughMonth) {
+        this.goodThroughMonth = goodThroughMonth;
+    }
+
+    public void withGoodThroughYear(Integer goodThroughYear) {
+        this.goodThroughYear = goodThroughYear;
     }
 
     private String IIN(){
@@ -33,4 +50,19 @@ public class CreditCardAccount extends Account {
         return issuerCompany.MII() + IIN() + random.substring(random.length()-10);
     }
 
+    public IssuerCompany getIssuerCompany() {
+        return issuerCompany;
+    }
+
+    public Integer getCcvCode() {
+        return ccvCode;
+    }
+
+    public Integer getGoodThroughMonth() {
+        return goodThroughMonth;
+    }
+
+    public Integer getGoodThroughYear() {
+        return goodThroughYear;
+    }
 }

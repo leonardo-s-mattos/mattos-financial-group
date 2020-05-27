@@ -11,11 +11,19 @@ public class AccountHolder {
         this.holderType = holderType;
     }
 
-    public String getIdNumber() {
+    public String getHolderType() {
+        return holderType;
+    }
+
+    public String getTaxIdNumber() {
         return taxIdNumber;
     }
 
-    public String getHolderType() {
-        return holderType;
+    public Address getBillingAddress() {
+        return billingAddress;
+    }
+
+    public void withBillingAddress(String line1, String city, String state, String country, String zipCode){
+        billingAddress = new Address(line1, city, state, country, zipCode);
     }
 }

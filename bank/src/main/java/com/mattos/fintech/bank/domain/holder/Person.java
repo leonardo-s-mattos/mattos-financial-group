@@ -28,11 +28,11 @@ public class Person extends AccountHolder {
         if (o == null || getClass() != o.getClass())
             return false;
         Person person = (Person) o;
-        return super.getIdNumber() == person.getIdNumber() && firstName.equals(person.firstName) && lastName.equals(person.lastName);
+        return super.getTaxIdNumber() == person.getTaxIdNumber() && firstName.equals(person.firstName) && lastName.equals(person.lastName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.getIdNumber(), firstName, lastName);
+        return Objects.hash(super.getTaxIdNumber(), firstName, lastName);
     }
 }

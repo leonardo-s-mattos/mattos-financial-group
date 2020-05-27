@@ -22,8 +22,8 @@ public class AccountShould {
         CreditCardAccount actual = (CreditCardAccount)AccountType.CREDIT_CARD.getInstance(accountName, accountHolder);
         actual.withIssuer(issuerCompany);
 
-        assertNotNull(actual.getCreditCardNumber());
-        assertThat(actual.getCreditCardNumber().length()).isEqualTo(16);
+        assertNotNull(actual.getAccountNumber());
+        assertThat(actual.getAccountNumber().length()).isEqualTo(16);
         assertNotNull(actual.getLastFourDigits());
         assertThat(actual.getLastFourDigits().length()).isEqualTo(16);
 

@@ -19,16 +19,23 @@ public class AccountRepo implements AccountState, AccountQuery {
 
     @Override
     public Mono<Account> createAccount(Account account) {
-        return mongoRepo.save(account);
+        return mongoRepo.save(AccountEntity.fromCreditCardAccount(account))
+                .map(savedAccount -> {
+                    return AccountEntity.fromAccountEntity(savedAccount);
+                });
     }
 
     @Override
     public Mono<Account> updateAccount(Account account) {
-        return mongoRepo.save(account);
+        return mongoRepo.save(AccountEntity.fromCreditCardAccount(account))
+                .map(savedAccount -> {
+                    return AccountEntity.fromAccountEntity(savedAccount);
+                });
     }
 
     @Override
     public Flux<Account> listAllCreditCards(String accountHolderId) {
-        return mongoRepo.findAll();
+
+        return mongoRepo.findAll().map(loadedEntity -> {return AccountEntity.fromAccountEntity(loadedEntity);});
     }
 }

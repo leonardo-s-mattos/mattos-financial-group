@@ -13,7 +13,7 @@ public class CheckingAccount extends Account{
     }
 
     public CheckingAccount(String name, AccountHolder accountHolder) {
-        super(AccountType.CHECKING, AccountState.OPEN, name, accountHolder);
+        super(AccountType.CHECKING, name, accountHolder);
         currentBalance = BigDecimal.ZERO;
     }
 

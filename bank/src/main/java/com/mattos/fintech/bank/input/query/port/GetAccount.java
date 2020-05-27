@@ -1,9 +1,9 @@
 package com.mattos.fintech.bank.input.query.port;
 
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 public interface GetAccount {
 
-    public List<CreditCardInfo> listAllOpenCards(String accountHolderId);
+    Flux<CreditCardInfo> listAllOpenCards(String accountHolderId);
 
 }

@@ -9,11 +9,19 @@ public enum AccountType {
                 public CreditCardAccount getInstance(String name, AccountHolder accountHolder){
                         return new CreditCardAccount(name, accountHolder);
                 }
+                @Override
+                public CreditCardAccount getInstance(String accountNumber, String name, AccountHolder accountHolder){
+                        return new CreditCardAccount(accountNumber, name, accountHolder);
+                }
         },
         SAVINGS{
                 @Override
                 public CreditCardAccount getInstance(String name, AccountHolder accountHolder){
                         return new CreditCardAccount(name, accountHolder);
+                }
+                @Override
+                public CreditCardAccount getInstance(String accountNumber, String name, AccountHolder accountHolder){
+                        return new CreditCardAccount(accountNumber, name, accountHolder);
                 }
         },
         CHECKING{
@@ -21,7 +29,12 @@ public enum AccountType {
                 public CreditCardAccount getInstance(String name, AccountHolder accountHolder){
                         return new CreditCardAccount(name, accountHolder);
                 }
+                @Override
+                public CreditCardAccount getInstance(String accountNumber, String name, AccountHolder accountHolder){
+                        return new CreditCardAccount(accountNumber, name, accountHolder);
+                }
         };
 
         public abstract Account getInstance(String name, AccountHolder accountHolder);
+        public abstract Account getInstance(String accountNumber, String name, AccountHolder accountHolder);
 }

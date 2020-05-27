@@ -1,6 +1,8 @@
 package com.mattos.fintech.bank.input.adapter;
 
+import com.mattos.fintech.bank.application.service.QueryAccountsService;
 import com.mattos.fintech.bank.domain.account.CreditCardAccount;
+import com.mattos.fintech.bank.input.query.port.CreditCardInfo;
 import com.mattos.fintech.bank.input.usecase.port.CreditCardRequestInfo;
 import com.mattos.fintech.bank.input.usecase.port.OpenAccount;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +17,15 @@ import reactor.core.publisher.Mono;
 public class AccountController {
 
     private final OpenAccount openAccountPort;
-    private final OpenAccount openAccountPort;
+    private final QueryAccountsService queryAccountsPort;
+
+    public AccountController(OpenAccount openAccountPort, QueryAccountsService queryAccountsPort) {
+        this.openAccountPort = openAccountPort;
+        this.queryAccountsPort = queryAccountsPort;
+    }
 
     @Autowired
-    public AccountController(OpenAccount openAccountPort) {
-        this.openAccountPort = openAccountPort;
-    }
+
 
     @PostMapping(path="/creditcards")
     public Mono<ResponseEntity<String>> save(@RequestBody CreditCardRequestInfo requestInfo) {
@@ -29,9 +34,8 @@ public class AccountController {
     }
 
     @GetMapping(path="/creditcards")
-    public Flux<CreditCardAccountView> save(@RequestBody CreditCardRequestInfo requestInfo) {
-        return openAccountPort.openCreditCardAccount(requestInfo)
-                .map(savedAccount -> new ResponseEntity<>(savedAccount, HttpStatus.CREATED));
+    public Flux<CreditCardInfo> listAll( @PathVariable String accountHolderId) {
+        return queryAccountsPort.listAllOpenCards(accountHolderId);
     }
 
 }
