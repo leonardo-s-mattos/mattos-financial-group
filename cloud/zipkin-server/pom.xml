@@ -16,7 +16,6 @@
 
 	<dependencies>
 
-
 		<dependency>
 			<groupId>io.zipkin.java</groupId>
 			<artifactId>zipkin-server</artifactId>
