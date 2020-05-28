@@ -13,10 +13,6 @@ public abstract class Account {
     private String name;
     private AccountHolder accountHolder;
 
-    public Account(){
-
-    }
-
     public Account(AccountType accountType, String name, AccountHolder accountHolder) {
         this.accountType = accountType;
         this.name = name;

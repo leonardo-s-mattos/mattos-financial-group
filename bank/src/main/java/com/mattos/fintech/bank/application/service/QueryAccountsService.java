@@ -4,10 +4,10 @@ import com.mattos.fintech.bank.domain.account.CreditCardAccount;
 import com.mattos.fintech.bank.input.query.port.CreditCardInfo;
 import com.mattos.fintech.bank.input.query.port.GetAccount;
 import com.mattos.fintech.bank.output.port.AccountQuery;
+import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
-import java.util.List;
-
+@Component
 public class QueryAccountsService implements GetAccount{
 
     private final AccountQuery port;

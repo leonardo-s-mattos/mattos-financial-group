@@ -10,8 +10,10 @@ import com.mattos.fintech.bank.domain.holder.Person;
 import com.mattos.fintech.bank.input.usecase.port.CreditCardRequestInfo;
 import com.mattos.fintech.bank.input.usecase.port.OpenAccount;
 import com.mattos.fintech.bank.output.port.AccountState;
+import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
+@Component
 public class OpenAccountService implements OpenAccount {
 
     private AccountState accountStatePort;
