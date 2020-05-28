@@ -1,5 +1,8 @@
 package com.mattos.fintech.bank.input.usecase.port;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class CreditCardRequestInfo {
 
     String issuerCompany;
@@ -10,13 +13,14 @@ public class CreditCardRequestInfo {
     String streetAddress;
     String city;
     String state;
+    String country;
     String zipCode;
 
     public CreditCardRequestInfo(){
         super();
     }
 
-    public CreditCardRequestInfo(String issuerCompany, String accountName, String accountHolderId, String firstName, String lastName, String streetAddress, String city, String state, String zipCode) {
+    public CreditCardRequestInfo(String issuerCompany, String accountName, String accountHolderId, String firstName, String lastName, String streetAddress, String city, String state, String country, String zipCode) {
         this.issuerCompany = issuerCompany;
         this.accountName = accountName;
         this.accountHolderId = accountHolderId;
@@ -25,6 +29,7 @@ public class CreditCardRequestInfo {
         this.streetAddress = streetAddress;
         this.city = city;
         this.state = state;
+        this.country = country;
         this.zipCode = zipCode;
     }
 
@@ -98,5 +103,13 @@ public class CreditCardRequestInfo {
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }

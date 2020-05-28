@@ -24,30 +24,34 @@ public class CreditCardAccount extends Account {
         super(accountNumber, AccountType.CREDIT_CARD, name, accountHolder);
     }
 
-    public void withIssuer(IssuerCompany issuerCompany){
+    public CreditCardAccount withIssuer(IssuerCompany issuerCompany){
         this.issuerCompany = issuerCompany;
-        super.withNumber(generateAccountNumbers(issuerCompany));
+        return this;
     }
 
-    public void withCcvCode(Integer ccvCode) {
+    public CreditCardAccount withCcvCode(Integer ccvCode) {
         this.ccvCode = ccvCode;
+        return this;
     }
 
-    public void withGoodThroughMonth(Integer goodThroughMonth) {
+    public CreditCardAccount withGoodThroughMonth(Integer goodThroughMonth) {
         this.goodThroughMonth = goodThroughMonth;
+        return this;
     }
 
-    public void withGoodThroughYear(Integer goodThroughYear) {
+    public CreditCardAccount withGoodThroughYear(Integer goodThroughYear) {
         this.goodThroughYear = goodThroughYear;
+        return this;
     }
 
     private String IIN(){
         return "14720";
     }
 
-    private String generateAccountNumbers(IssuerCompany issuerCompany){
+    public CreditCardAccount withAccountNumber(){
         String random = String.valueOf(new Random().nextLong());
-        return issuerCompany.MII() + IIN() + random.substring(random.length()-10);
+        super.withNumber(issuerCompany.MII() + IIN() + random.substring(random.length()-10));
+        return this;
     }
 
     public IssuerCompany getIssuerCompany() {

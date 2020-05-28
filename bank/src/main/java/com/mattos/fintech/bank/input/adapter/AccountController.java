@@ -19,13 +19,11 @@ public class AccountController {
     private final OpenAccount openAccountPort;
     private final QueryAccountsService queryAccountsPort;
 
+    @Autowired
     public AccountController(OpenAccount openAccountPort, QueryAccountsService queryAccountsPort) {
         this.openAccountPort = openAccountPort;
         this.queryAccountsPort = queryAccountsPort;
     }
-
-    @Autowired
-
 
     @PostMapping(path="/creditcards")
     public Mono<ResponseEntity<String>> save(@RequestBody CreditCardRequestInfo requestInfo) {
@@ -34,7 +32,7 @@ public class AccountController {
     }
 
     @GetMapping(path="/creditcards")
-    public Flux<CreditCardInfo> listAll( @PathVariable String accountHolderId) {
+    public Flux<CreditCardInfo> listAll( @RequestParam String accountHolderId) {
         return queryAccountsPort.listAllOpenCards(accountHolderId);
     }
 

@@ -1,1 +1,17 @@
-
+server:
+  port: 9091
+spring:
+  application:
+    name: bank
+  cloud:
+    config:
+      name: bank
+      discovery:
+        service-id: config
+        enabled: true
+eureka:
+  client:
+    region: default
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

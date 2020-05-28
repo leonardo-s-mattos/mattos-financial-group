@@ -1,8 +1,8 @@
-package com.mattos.fintech.bank.output.adapter.mongo;
+package com.mattos.fintech.bank.output.adapter;
 
+import com.google.common.base.Objects;
 import com.mattos.fintech.bank.domain.account.*;
 import com.mattos.fintech.bank.domain.holder.AccountHolder;
-import com.mattos.fintech.bank.domain.holder.Person;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -43,72 +43,36 @@ public class AccountEntity {
         return accountNumber;
     }
 
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
     public AccountHolderEntity getAccountHolder() {
         return accountHolder;
-    }
-
-    public void setAccountHolder(AccountHolderEntity accountHolder) {
-        this.accountHolder = accountHolder;
     }
 
     public String getAccountType() {
         return accountType;
     }
 
-    public void setAccountType(String accountType) {
-        this.accountType = accountType;
-    }
-
     public String getState() {
         return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getIssuerCompany() {
         return issuerCompany;
-    }
-
-    public void setIssuerCompany(String issuerCompany) {
-        this.issuerCompany = issuerCompany;
     }
 
     public Integer getCcvCode() {
         return ccvCode;
     }
 
-    public void setCcvCode(Integer ccvCode) {
-        this.ccvCode = ccvCode;
-    }
-
     public Integer getGoodThroughMonth() {
         return goodThroughMonth;
     }
 
-    public void setGoodThroughMonth(Integer goodThroughMonth) {
-        this.goodThroughMonth = goodThroughMonth;
-    }
-
     public Integer getGoodThroughYear() {
         return goodThroughYear;
-    }
-
-    public void setGoodThroughYear(Integer goodThroughYear) {
-        this.goodThroughYear = goodThroughYear;
     }
 
     public static AccountEntity fromCreditCardAccount(Account account) {
@@ -139,12 +103,28 @@ public class AccountEntity {
                 accountEntity.getAccountHolder().getBillingAddressState(),
                 accountEntity.getAccountHolder().getBillingAddressCountry(),
                 accountEntity.getAccountHolder().getBillingAddressZip());
-        CreditCardAccount account = (CreditCardAccount)accountType.getInstance(accountEntity.getAccountNumber(), accountEntity.getName(), accountHolder );
-        account.withIssuer(IssuerCompany.valueOf(accountEntity.getIssuerCompany()));
+        CreditCardAccount account = ((CreditCardAccount)accountType.getInstance(accountEntity.getAccountNumber(), accountEntity.getName(), accountHolder ))
+            .withIssuer(IssuerCompany.valueOf(accountEntity.getIssuerCompany()))
+            .withCcvCode(accountEntity.getCcvCode())
+            .withGoodThroughMonth(accountEntity.getGoodThroughMonth())
+            .withGoodThroughYear(accountEntity.getGoodThroughYear());
+
         account.withState(AccountState.valueOf(accountEntity.getState()));
-        account.withCcvCode(accountEntity.getCcvCode());
-        account.withGoodThroughMonth(accountEntity.getGoodThroughMonth());
-        account.withGoodThroughYear(accountEntity.getGoodThroughYear());
+
         return account;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AccountEntity that = (AccountEntity) o;
+        return Objects.equal(accountNumber, that.accountNumber) &&
+                Objects.equal(accountHolder, that.accountHolder);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(accountNumber, accountHolder);
     }
 }

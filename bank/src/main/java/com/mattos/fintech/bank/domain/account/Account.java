@@ -1,5 +1,6 @@
 package com.mattos.fintech.bank.domain.account;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.mattos.fintech.bank.domain.holder.AccountHolder;
 import org.apache.commons.lang.StringUtils;
@@ -30,8 +31,9 @@ public abstract class Account {
         this.accountNumber = accountNumber;
     }
 
-    public void withState(AccountState state){
+    public Account withState(AccountState state){
         this.state = state;
+        return this;
     }
 
     public String getAccountNumber(){
@@ -56,5 +58,19 @@ public abstract class Account {
 
     public AccountHolder getAccountHolder() {
         return accountHolder;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return Objects.equal(accountNumber, account.accountNumber) &&
+                Objects.equal(accountHolder, account.accountHolder);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(accountNumber, accountHolder);
     }
 }
