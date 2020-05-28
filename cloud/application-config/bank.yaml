@@ -5,4 +5,6 @@ spring:
     mongodb:
       host: mongo
       port: 27017
-      database: bankDB
+      database: bank-database
+      username: admin
+      password: password
