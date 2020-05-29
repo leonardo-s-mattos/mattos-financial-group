@@ -37,6 +37,4 @@ public class OpenAccountService implements OpenAccount {
 
         return savedAccount.map(Account::getLastFourDigits);
     }
-
-
 }

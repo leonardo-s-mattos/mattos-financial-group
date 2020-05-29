@@ -26,12 +26,16 @@ public class QueryAccountsServiceShould {
     private QueryAccountsService target;
 
     private CreditCardQueryPort mockCreditCardQueryPort;
+    private CheckingAccountQueryPort mockCheckingAccountQueryPort;
+    private SavingsAccountQueryPort mockSavingsAccountQueryPort;
 
     @BeforeEach
     void init(){
         mockCreditCardQueryPort = mock(CreditCardQueryPort.class);
+        mockCheckingAccountQueryPort = mock(CheckingAccountQueryPort.class);
+        mockSavingsAccountQueryPort = mock(SavingsAccountQueryPort.class);
 
-        target = new QueryAccountsService(mockCreditCardQueryPort);
+        target = new QueryAccountsService(mockCreditCardQueryPort, mockCheckingAccountQueryPort, mockSavingsAccountQueryPort);
     }
 
     @ParameterizedTest
@@ -49,6 +53,35 @@ public class QueryAccountsServiceShould {
 
     }
 
+    @ParameterizedTest
+    @MethodSource("givenAnAccountHolderId")
+    void listAllCheckingAccounts_fromAGivenAccountHolder(String givenAccountHolderId, CheckingAccount expectedAccount){
+
+        when(mockCreditCardQueryPort.listAllCheckingAccounts(givenAccountHolderId)).thenReturn(Flux.just(expectedAccount));
+
+        Flux<CreditCardInfo> actualList = target.listAllOpenCards(givenAccountHolderId);
+
+        StepVerifier.create(actualList)
+                .expectNextMatches(created -> created.getAccountNumber().equals(expectedAccount.getAccountNumber()))
+                .verifyComplete();
+
+
+    }
+
+    @ParameterizedTest
+    @MethodSource("givenAnAccountHolderId")
+    void listAllSavingsAccounts_fromAGivenAccountHolder(String givenAccountHolderId, SavingsAccount expectedAccount){
+
+        when(mockCreditCardQueryPort.listAllSavingsAccount(givenAccountHolderId)).thenReturn(Flux.just(expectedAccount));
+
+        Flux<CreditCardInfo> actualList = target.listAllOpenCards(givenAccountHolderId);
+
+        StepVerifier.create(actualList)
+                .expectNextMatches(created -> created.getAccountNumber().equals(expectedAccount.getAccountNumber()))
+                .verifyComplete();
+
+
+    }
 
     private static Stream<Arguments> givenAnAccountHolderId(){
         final String taxIdNumber = "12345";

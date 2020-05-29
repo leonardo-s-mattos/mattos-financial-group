@@ -1,6 +1,7 @@
 package com.mattos.fintech.bank.application.service;
 
 import com.mattos.fintech.bank.domain.account.AccountType;
+import com.mattos.fintech.bank.domain.account.CheckingAccount;
 import com.mattos.fintech.bank.domain.account.CreditCardAccount;
 import com.mattos.fintech.bank.domain.account.IssuerCompany;
 import com.mattos.fintech.bank.domain.holder.AccountHolder;
@@ -26,12 +27,16 @@ public class OpenAccountServiceShould {
     private OpenAccountService target;
 
     private CreditCardAccountStatePort mockCreditCardStatePort;
+    private CheckingAccountStatePort mockCheckingStatePort;
+    private SavingsAccountStatePort mockSavingsStatePort;
 
     @BeforeEach
     void init(){
         mockCreditCardStatePort = mock(CreditCardAccountStatePort.class);
+        mockCheckingStatePort = mock(CheckingAccountStatePort.class);
+        mockSavingsStatePort = mock(SavingsAccountStatePort.class);
 
-        target = new OpenAccountService(mockCreditCardStatePort);
+        target = new OpenAccountService(mockCreditCardStatePort, mockCheckingStatePort, mockSavingsStatePort );
     }
 
     @ParameterizedTest
@@ -47,10 +52,37 @@ public class OpenAccountServiceShould {
         StepVerifier.create(actualAccountNumber)
                 .expectNextMatches(created -> expectedAccountNumber.equals(created))
                 .verifyComplete();
-
-
     }
 
+    @ParameterizedTest
+    @MethodSource("givenAnCheckingInfoRequest")
+    void openACheckingAccount(CheckingRequestInfo givenRequest,
+                              CheckingAccountAccount expectedAccount,
+                              String expectedAccountNumber){
+
+        when(mockCheckingStatePort.create(any(CheckingAccount.class))).thenReturn(Mono.just(expectedAccount));
+
+        Mono<String> actualAccountNumber = target.openCheckingAccount(givenRequest);
+
+        StepVerifier.create(actualAccountNumber)
+                .expectNextMatches(created -> expectedAccountNumber.equals(created))
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("givenAnSavingsAccountInfoRequest")
+    void openASavingsAccount(SavingsRequestInfo givenRequest,
+                                SavingsAccount expectedAccount,
+                                String expectedAccountNumber){
+
+        when(mockSavinbgsStatePort.create(any(SavingsAccount.class))).thenReturn(Mono.just(expectedAccount));
+
+        Mono<String> actualAccountNumber = target.openSavingsAccount(givenRequest);
+
+        StepVerifier.create(actualAccountNumber)
+                .expectNextMatches(created -> expectedAccountNumber.equals(created))
+                .verifyComplete();
+    }
 
     private static Stream<Arguments> givenAnCreditCardInfoRequest(){
         final String taxIdNumber = "12345";

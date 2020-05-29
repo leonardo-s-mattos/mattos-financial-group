@@ -2,6 +2,7 @@ package com.mattos.fintech.bank.domain.account;
 
 import com.mattos.fintech.bank.domain.holder.AccountHolder;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Random;
 
@@ -11,10 +12,12 @@ public class CreditCardAccount extends Account {
     private Integer ccvCode;
     private Integer goodThroughMonth;
     private Integer goodThroughYear;
+    private BigDecimal limitAmount;
+    private BigDecimal currentBalance;
 
     public CreditCardAccount(String name, AccountHolder accountHolder) {
         super(AccountType.CREDIT_CARD, name, accountHolder);
-        withState(AccountState.OPEN);
+        withState(AccountState.PENDING);
         ccvCode = new Random().nextInt(1000);
         goodThroughMonth = LocalDate.now().getMonthValue();
         goodThroughYear = LocalDate.now().getYear() + 4;
@@ -68,5 +71,13 @@ public class CreditCardAccount extends Account {
 
     public Integer getGoodThroughYear() {
         return goodThroughYear;
+    }
+
+    public BigDecimal getLimitAmount() {
+        return limitAmount;
+    }
+
+    public BigDecimal getCurrentBalance() {
+        return currentBalance;
     }
 }
