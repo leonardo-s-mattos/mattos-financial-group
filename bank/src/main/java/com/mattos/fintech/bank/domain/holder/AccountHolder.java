@@ -1,28 +1,23 @@
 package com.mattos.fintech.bank.domain.holder;
 
 import com.google.common.base.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document
+@Getter
 public class AccountHolder {
 
-    private String taxIdNumber;
-    private String holderType;
-    private Address billingAddress;
+    @Id
+    protected String taxIdNumber;
+    protected String holderType;
+    protected Address billingAddress;
 
     public AccountHolder(String taxIdNumber, String holderType){
         this.taxIdNumber = taxIdNumber;
         this.holderType = holderType;
-    }
-
-    public String getHolderType() {
-        return holderType;
-    }
-
-    public String getTaxIdNumber() {
-        return taxIdNumber;
-    }
-
-    public Address getBillingAddress() {
-        return billingAddress;
     }
 
     public AccountHolder withBillingAddress(String line1, String city, String state, String country, String zipCode){

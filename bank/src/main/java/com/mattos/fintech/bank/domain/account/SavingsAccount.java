@@ -1,13 +1,55 @@
 package com.mattos.fintech.bank.domain.account;
 
-import java.math.BigDecimal;
+import com.mattos.fintech.bank.domain.transaction.DepositTransaction;
+import com.mattos.fintech.bank.domain.transaction.WithdrawTransaction;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-public class SavingsAccount {
+import java.math.BigDecimal;
+import java.util.EnumSet;
+import java.util.Random;
+
+@Getter
+@SuperBuilder
+@ToString
+@NoArgsConstructor
+@Document
+public class SavingsAccount extends Account{
 
     private BigDecimal currentBalance;
 
-    public BigDecimal getCurrentBalance(){
-        return currentBalance;
+    private static EnumSet<AccountState> inactiveStates =
+            EnumSet.of(AccountState.INACTIVE, AccountState.PENDING, AccountState.CLOSED);
+
+    public Boolean credit(DepositTransaction deposit){
+        if(inactiveStates.contains(getState())) return false;
+        if(!deposit.getTargetAccount().equals(this)) return false;
+        currentBalance = currentBalance.add(deposit.getAmount());
+        addTransaction(deposit);
+        return true;
+    }
+
+    public Boolean debit(WithdrawTransaction withdraw){
+        if(inactiveStates.contains(getState())) return false;
+        if(!withdraw.getTargetAccount().equals(this)) return false;
+        if(currentBalance.compareTo(withdraw.getAmount()) < 0) return false;
+        currentBalance = currentBalance.subtract(withdraw.getAmount());
+        addTransaction(withdraw);
+        return true;
+    }
+
+    public SavingsAccount withBalance(BigDecimal balance){
+        this.currentBalance = balance;
+        return this;
+    }
+
+    public SavingsAccount withAccountNumber(){
+        String random = String.valueOf(new Random().nextLong());
+        super.withNumber(random.substring(random.length()-10));
+        return this;
     }
 
 }

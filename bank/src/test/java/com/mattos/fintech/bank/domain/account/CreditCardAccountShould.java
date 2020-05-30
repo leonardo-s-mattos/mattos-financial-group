@@ -1,100 +1,88 @@
 package com.mattos.fintech.bank.domain.account;
 
-import com.mattos.fintech.bank.domain.holder.AccountHolder;
-import com.mattos.fintech.bank.domain.holder.Person;
-import com.mattos.fintech.bank.input.usecase.port.CreditCardRequestInfo;
+
+import com.mattos.fintech.bank.domain.transaction.CreditCardPayment;
+import com.mattos.fintech.bank.domain.transaction.CreditCardPurchase;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.stream.Stream;
 
+import static com.mattos.fintech.bank.domain.account.AccountState.CLOSED;
 import static com.mattos.fintech.bank.domain.account.AccountState.OPEN;
+import static java.math.BigDecimal.ZERO;
 import static org.junit.jupiter.api.Assertions.*;
+import static com.mattos.fintech.bank.util.StubFactory.*;
 
 public class CreditCardAccountShould {
 
-    @ParameterizedTest
-    @MethodSource("givenAnPaymentTransactionOnAccount")
-    void decreaseBalance_whenReceivePayment(CreditCardAccount givenAccount, CreditCardPayment stubPayment){
+    private static CreditCardAccount givenZeroedOpenCreditCardAccount ;
+    private static CreditCardAccount givenClosedCreditCardAccount;
+    private static CreditCardAccount given10BucksOpenCreditCardAccount;
 
-        Boolean actualResult = givenAccount.receivePayment(stubPayment);
+    @BeforeEach
+    void setup(){
+
+        givenZeroedOpenCreditCardAccount = stubCreditCardAccount("12345", "STUBNUMBER",
+                "111 Sesame St", "Sesame Place", "SE", "US",  "12121",
+                "stubAccount", ZERO, OPEN);
+
+        givenClosedCreditCardAccount = stubCreditCardAccount("12345", "STUBNUMBER",
+                "111 Sesame St", "Sesame Place", "SE", "US",  "12121",
+                "stubAccount", BigDecimal.TEN, CLOSED);
+
+        given10BucksOpenCreditCardAccount = stubCreditCardAccount("12345", "WRONGNUMBER",
+                "111 Sesame St", "Sesame Place", "SE", "US",  "12121",
+                "stubAccount", BigDecimal.TEN, OPEN);
+
+    }
+
+    @Test
+    void decreaseBalance_whenReceivePayment(){
+
+        //given
+        CreditCardPayment givenPaymentTransaction = stubCreditCardPayment(BigDecimal.valueOf(5L), LocalDate.of(2020, 5, 28), "Balance payment");
+
+        //when
+        Boolean actualResult = given10BucksOpenCreditCardAccount.pay(givenPaymentTransaction);
+
+        //then
         assertTrue(actualResult);
-        assertEquals(givenAccount.getCurrentBalance().longValue(), 0L);
-        assertEquals(givenAccount.getLastestTransactions().get(4), stubPayment);
+        assertEquals(given10BucksOpenCreditCardAccount.getCurrentBalance().longValue(), 5L);
+        assertEquals(given10BucksOpenCreditCardAccount.getRecentTransactions().getLast(), givenPaymentTransaction);
 
     }
 
     @Test
     void increaseBalance_whenNewPurchaseAuthorized(){
 
-        Boolean actualResult = givenAccount.purchase(stubPayment);
+        //given
+        CreditCardPurchase givenPurchaseTransaction = stubCreditCardPurchase(BigDecimal.valueOf(5L), LocalDate.of(2020, 5, 28), "Balance payment");
+
+        Boolean actualResult = givenZeroedOpenCreditCardAccount.purchase(givenPurchaseTransaction);
         assertTrue(actualResult);
-        assertEquals(givenAccount.getCurrentBalance().longValue(), 20L);
-        assertEquals(givenAccount.getLastestTransactions().get(4), stubPayment);
+        assertEquals(givenZeroedOpenCreditCardAccount.getCurrentBalance().longValue(), 5L);
+        assertEquals(givenZeroedOpenCreditCardAccount.getRecentTransactions().getLast(), givenPurchaseTransaction);
 
     }
 
     @Test
     void decreaseBalance_whenPurchaseIsCancelled(){
 
+        //given
+        CreditCardPurchase givenPurchaseTransaction = stubCreditCardPurchase(BigDecimal.valueOf(5L), LocalDate.of(2020, 5, 28), "Balance payment");
+
+        //when
+        Boolean actualResult = given10BucksOpenCreditCardAccount.revertPurchase(givenPurchaseTransaction);
+
+        //then
+        assertTrue(actualResult);
+        assertEquals(given10BucksOpenCreditCardAccount.getCurrentBalance().longValue(), 5L);
+        assertEquals(given10BucksOpenCreditCardAccount.getRecentTransactions().getLast(), givenPurchaseTransaction);
+
     }
 
-    private static Stream<Arguments> givenAnPaymentTransactionOnAccount(){
-        final String taxIdNumber = "12345";
-        final String stubnumber = "STUBNUMBER";
-        final String line1 = "111 Sesame St";
-        final String city = "Sesame Place";
-        final  String state = "SE";
-        final String country = "US";
-        final String zipCode = "12121";
-        final String name = "stubAccount";
 
-        return Stream.of(Arguments.of(
-                stubCreditCardAccount(taxIdNumber, stubnumber, line1, city, state, country, zipCode, name, BigDecimal.TEN)
-                , stubCreditCardPayment(BigDecimal.TEN, LocalDate.of(2020, 05, 26), "from checking")));
-    }
-
-    private static CreditCardAccount stubCreditCardAccount(String taxIdNumber, String stubnumber, String line1, String city, String state, String country, String zipCode, String name, BigDecimal balance) {
-        return ((CreditCardAccount) AccountType.CREDIT_CARD.getInstance(stubnumber, name, new AccountHolder(taxIdNumber, "PERSON")
-                .withBillingAddress(line1, city, state, country, zipCode))
-                .withState(OPEN))
-                .withIssuer(IssuerCompany.VISA)
-                .withBalance(balance);
-    }
-
-    private static CreditCardPayment stubCreditCardPayment(BigDecimal amount, LocalDate paymentDate, String comment) {
-        return new CreditCardPayment().withAmount(amount).withPaymentDate(paymentDate).withComment(comment);
-    }
-
-    private static Stream<Arguments> givenAnPurchaseTransactionOnAccount(){
-        final String taxIdNumber = "12345";
-        final String stubnumber = "STUBNUMBER";
-        final String line1 = "111 Sesame St";
-        final String city = "Sesame Place";
-        final  String state = "SE";
-        final String country = "US";
-        final String zipCode = "12121";
-        final String name = "stubAccount";
-
-        return Stream.of(Arguments.of(
-                stubCreditCardAccount(taxIdNumber, stubnumber, line1, city, state, country, zipCode, name, BigDecimal.TEN)
-                , stubCreditCardPayment(BigDecimal.TEN, LocalDate.of(2020, 05, 26), "from checking")));
-    }
-
-    private static CreditCardAccount stubCreditCardAccount(String taxIdNumber, String stubnumber, String line1, String city, String state, String country, String zipCode, String name, BigDecimal balance) {
-        return ((CreditCardAccount) AccountType.CREDIT_CARD.getInstance(stubnumber, name, new AccountHolder(taxIdNumber, "PERSON")
-                .withBillingAddress(line1, city, state, country, zipCode))
-                .withState(OPEN))
-                .withIssuer(IssuerCompany.VISA)
-                .withBalance(balance);
-    }
-
-    private static CreditCardPurchase stubCreditCardPurchase(BigDecimal amount, LocalDate purchaseDate, String comment) {
-        return new CreditCardPurchase().withAmount(amount).withTransactionDate(purchaseDate).withComment(comment);
-    }
 
 }

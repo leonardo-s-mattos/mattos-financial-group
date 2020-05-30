@@ -1,12 +1,12 @@
 package com.mattos.fintech.bank.application.service;
 
-import com.mattos.fintech.bank.domain.account.AccountType;
-import com.mattos.fintech.bank.domain.account.CheckingAccount;
-import com.mattos.fintech.bank.domain.account.CreditCardAccount;
-import com.mattos.fintech.bank.domain.account.IssuerCompany;
+import com.mattos.fintech.bank.domain.account.*;
 import com.mattos.fintech.bank.domain.holder.AccountHolder;
+import com.mattos.fintech.bank.input.usecase.port.BankingAccountRequestInfo;
 import com.mattos.fintech.bank.input.usecase.port.CreditCardRequestInfo;
+import com.mattos.fintech.bank.output.port.CheckingAccountStatePort;
 import com.mattos.fintech.bank.output.port.CreditCardAccountStatePort;
+import com.mattos.fintech.bank.output.port.SavingsAccountStatePort;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,9 +16,13 @@ import org.junit.platform.commons.util.StringUtils;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.math.BigDecimal;
 import java.util.stream.Stream;
 
+import static com.mattos.fintech.bank.domain.account.AccountState.CLOSED;
 import static com.mattos.fintech.bank.domain.account.AccountState.OPEN;
+import static com.mattos.fintech.bank.util.StubFactory.*;
+import static java.math.BigDecimal.ZERO;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -56,8 +60,8 @@ public class OpenAccountServiceShould {
 
     @ParameterizedTest
     @MethodSource("givenAnCheckingInfoRequest")
-    void openACheckingAccount(CheckingRequestInfo givenRequest,
-                              CheckingAccountAccount expectedAccount,
+    void openACheckingAccount(BankingAccountRequestInfo givenRequest,
+                              CheckingAccount expectedAccount,
                               String expectedAccountNumber){
 
         when(mockCheckingStatePort.create(any(CheckingAccount.class))).thenReturn(Mono.just(expectedAccount));
@@ -71,11 +75,11 @@ public class OpenAccountServiceShould {
 
     @ParameterizedTest
     @MethodSource("givenAnSavingsAccountInfoRequest")
-    void openASavingsAccount(SavingsRequestInfo givenRequest,
+    void openASavingsAccount(BankingAccountRequestInfo givenRequest,
                                 SavingsAccount expectedAccount,
                                 String expectedAccountNumber){
 
-        when(mockSavinbgsStatePort.create(any(SavingsAccount.class))).thenReturn(Mono.just(expectedAccount));
+        when(mockSavingsStatePort.create(any(SavingsAccount.class))).thenReturn(Mono.just(expectedAccount));
 
         Mono<String> actualAccountNumber = target.openSavingsAccount(givenRequest);
 
@@ -86,7 +90,6 @@ public class OpenAccountServiceShould {
 
     private static Stream<Arguments> givenAnCreditCardInfoRequest(){
         final String taxIdNumber = "12345";
-        final String stubnumber = "STUBNUMBER";
         final String line1 = "111 Sesame St";
         final String city = "Sesame Place";
         final  String state = "SE";
@@ -94,14 +97,12 @@ public class OpenAccountServiceShould {
         final String zipCode = "12121";
         final String name = "stubAccount";
 
-        AccountHolder stubAccountHolder = new AccountHolder(taxIdNumber, "PERSON")
-                .withBillingAddress(line1, city, state, country, zipCode);
+
+        CreditCardAccount stubAccount = stubCreditCardAccount(taxIdNumber, "STUBNUMBER",
+                line1, city, state, country,  zipCode,
+                name, ZERO, OPEN);
 
 
-        CreditCardAccount stubAccount =
-                ((CreditCardAccount) AccountType.CREDIT_CARD.getInstance(stubnumber, name, stubAccountHolder)
-                        .withState(OPEN))
-                        .withIssuer(IssuerCompany.VISA);
         CreditCardRequestInfo stubCreditCardRequestInfo = new CreditCardRequestInfo();
         stubCreditCardRequestInfo.setAccountHolderId(taxIdNumber);
         stubCreditCardRequestInfo.setCity(city);
@@ -112,6 +113,48 @@ public class OpenAccountServiceShould {
         stubCreditCardRequestInfo.setState(state);
         stubCreditCardRequestInfo.setStreetAddress(line1);
         stubCreditCardRequestInfo.setZipCode(zipCode);
+
+        return Stream.of(Arguments.of(stubCreditCardRequestInfo, stubAccount, "******MBER"));
+    }
+
+    private static Stream<Arguments> givenAnCheckingInfoRequest(){
+        final String taxIdNumber = "12345";
+        final String line1 = "111 Sesame St";
+        final String city = "Sesame Place";
+        final  String state = "SE";
+        final String country = "US";
+        final String zipCode = "12121";
+        final String name = "stubAccount";
+
+
+        CheckingAccount stubAccount = stubCheckingAccount(taxIdNumber, "STUBNUMBER",
+                line1, city, state, country,  zipCode,
+                name, ZERO, OPEN);
+
+
+        BankingAccountRequestInfo stubCreditCardRequestInfo = BankingAccountRequestInfo.builder().accountHolderId(taxIdNumber)
+                .accountName(name).taxIdNumber(taxIdNumber).build();
+
+        return Stream.of(Arguments.of(stubCreditCardRequestInfo, stubAccount, "******MBER"));
+    }
+
+    private static Stream<Arguments> givenAnSavingsAccountInfoRequest(){
+        final String taxIdNumber = "12345";
+        final String line1 = "111 Sesame St";
+        final String city = "Sesame Place";
+        final  String state = "SE";
+        final String country = "US";
+        final String zipCode = "12121";
+        final String name = "stubAccount";
+
+
+        SavingsAccount stubAccount = stubSavingsAccount(taxIdNumber, "STUBNUMBER",
+                line1, city, state, country,  zipCode,
+                name, ZERO, OPEN);
+
+
+        BankingAccountRequestInfo stubCreditCardRequestInfo = BankingAccountRequestInfo.builder().accountHolderId(taxIdNumber)
+                .accountName(name).taxIdNumber(taxIdNumber).build();
 
         return Stream.of(Arguments.of(stubCreditCardRequestInfo, stubAccount, "******MBER"));
     }

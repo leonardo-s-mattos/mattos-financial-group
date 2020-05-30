@@ -1,13 +1,14 @@
 package com.mattos.fintech.bank.application.service;
 
-import com.mattos.fintech.bank.domain.account.AccountType;
-import com.mattos.fintech.bank.domain.account.CreditCardAccount;
-import com.mattos.fintech.bank.domain.account.IssuerCompany;
+import com.mattos.fintech.bank.domain.account.*;
 import com.mattos.fintech.bank.domain.holder.AccountHolder;
+import com.mattos.fintech.bank.input.query.port.BankingAccountInfo;
 import com.mattos.fintech.bank.input.query.port.CreditCardInfo;
 import com.mattos.fintech.bank.input.usecase.port.CreditCardRequestInfo;
+import com.mattos.fintech.bank.output.port.CheckingAccountQueryPort;
 import com.mattos.fintech.bank.output.port.CreditCardAccountStatePort;
 import com.mattos.fintech.bank.output.port.CreditCardQueryPort;
+import com.mattos.fintech.bank.output.port.SavingsAccountQueryPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -48,36 +49,6 @@ public class QueryAccountsServiceShould {
 
         StepVerifier.create(actualList)
                 .expectNextMatches(created -> created.getCreditCardNumber().equals(expectedAccount.getAccountNumber()))
-                .verifyComplete();
-
-
-    }
-
-    @ParameterizedTest
-    @MethodSource("givenAnAccountHolderId")
-    void listAllCheckingAccounts_fromAGivenAccountHolder(String givenAccountHolderId, CheckingAccount expectedAccount){
-
-        when(mockCreditCardQueryPort.listAllCheckingAccounts(givenAccountHolderId)).thenReturn(Flux.just(expectedAccount));
-
-        Flux<CreditCardInfo> actualList = target.listAllOpenCards(givenAccountHolderId);
-
-        StepVerifier.create(actualList)
-                .expectNextMatches(created -> created.getAccountNumber().equals(expectedAccount.getAccountNumber()))
-                .verifyComplete();
-
-
-    }
-
-    @ParameterizedTest
-    @MethodSource("givenAnAccountHolderId")
-    void listAllSavingsAccounts_fromAGivenAccountHolder(String givenAccountHolderId, SavingsAccount expectedAccount){
-
-        when(mockCreditCardQueryPort.listAllSavingsAccount(givenAccountHolderId)).thenReturn(Flux.just(expectedAccount));
-
-        Flux<CreditCardInfo> actualList = target.listAllOpenCards(givenAccountHolderId);
-
-        StepVerifier.create(actualList)
-                .expectNextMatches(created -> created.getAccountNumber().equals(expectedAccount.getAccountNumber()))
                 .verifyComplete();
 
 

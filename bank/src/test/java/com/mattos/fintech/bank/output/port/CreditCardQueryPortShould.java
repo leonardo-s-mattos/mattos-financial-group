@@ -9,6 +9,7 @@ import com.mattos.fintech.bank.output.adapter.CreditCardAccountRepository;
 import com.mattos.fintech.bank.output.adapter.mongo.CreditCardAccountReactiveRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.provider.Arguments;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class CreditCardQueryPortShould {
     @Autowired
     private CreditCardAccountReactiveRepository creditCardAccountReactiveRepository;
 
-    @AfterEach
+    @BeforeEach
     void cleanUp() {
         creditCardAccountReactiveRepository.deleteAll();
     }
@@ -43,7 +44,6 @@ public class CreditCardQueryPortShould {
     void listAllCreditCards_fromAGivenAccountHolder() {
 
         CreditCardAccount stubCreditCardAccount = givenAnAccountHolderId("12345");
-
 
         Mono<CreditCardAccount> actualAccountNumber = creditCardAccountRepository.create(stubCreditCardAccount);
 
@@ -55,7 +55,7 @@ public class CreditCardQueryPortShould {
 
 
         Assertions.assertNotNull(actualList);
-        StepVerifier.create(actualAccountNumber).expectNextCount(1)
+        StepVerifier.create(actualAccountNumber)
                 .expectNextMatches(created -> created.getAccountHolder().getTaxIdNumber().equals("12345"))
                 .verifyComplete();
 
@@ -77,6 +77,7 @@ public class CreditCardQueryPortShould {
                 ((CreditCardAccount) AccountType.CREDIT_CARD.getInstance(name, stubAccountHolder)
                         .withState(OPEN))
                         .withIssuer(IssuerCompany.VISA);
+
 
         return stubAccount;
     }

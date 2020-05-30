@@ -5,16 +5,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreditCardInfo {
+public class BankingAccountInfo {
 
-    private String creditCardNumber;
-    private String creditCardLastDigits;
-    private Integer goodThoughMonth;
-    private Integer goodThoughYear;
+    private String accountNumber;
+    private String lastDigits;
+    private BigDecimal balance;
 
 
 }

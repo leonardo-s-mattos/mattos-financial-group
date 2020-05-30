@@ -5,5 +5,7 @@ import reactor.core.publisher.Flux;
 public interface GetAccount {
 
     Flux<CreditCardInfo> listAllOpenCards(String accountHolderId);
+    Flux<BankingAccountInfo> listAllOpenCheckingAccounts(String accountHolderId);
+    Flux<BankingAccountInfo> listAllOpenSavingsAccounts(String accountHolderId);
 
 }

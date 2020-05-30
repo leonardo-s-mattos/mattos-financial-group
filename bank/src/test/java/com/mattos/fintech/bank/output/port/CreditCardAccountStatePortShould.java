@@ -4,7 +4,6 @@ import com.mattos.fintech.bank.domain.account.AccountType;
 import com.mattos.fintech.bank.domain.account.CreditCardAccount;
 import com.mattos.fintech.bank.domain.account.IssuerCompany;
 import com.mattos.fintech.bank.domain.holder.AccountHolder;
-import com.mattos.fintech.bank.output.adapter.AccountEntity;
 import com.mattos.fintech.bank.output.adapter.CreditCardAccountRepository;
 import com.mattos.fintech.bank.output.adapter.mongo.CreditCardAccountReactiveRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,8 +34,7 @@ public class CreditCardAccountStatePortShould {
     @MethodSource("givenAnAccount")
     void createCreditCardAccount(CreditCardAccount givenAccount){
 
-        AccountEntity stubAccountEntity = AccountEntity.fromCreditCardAccount(givenAccount);
-        when(mockMongoRepo.insert(stubAccountEntity)).thenReturn(Mono.just(stubAccountEntity));
+        when(mockMongoRepo.save(givenAccount)).thenReturn(Mono.just(givenAccount));
 
         Mono<CreditCardAccount> actual = target.create(givenAccount);
 
@@ -48,8 +46,7 @@ public class CreditCardAccountStatePortShould {
     @MethodSource("givenAnAccount")
     void updateCreditCardAccountState(CreditCardAccount givenAccount){
 
-        AccountEntity stubAccountEntity = AccountEntity.fromCreditCardAccount(givenAccount);
-        when(mockMongoRepo.save(stubAccountEntity)).thenReturn(Mono.just(stubAccountEntity));
+        when(mockMongoRepo.save(givenAccount)).thenReturn(Mono.just(givenAccount));
 
         Mono<CreditCardAccount> actual = target.update(givenAccount);
 

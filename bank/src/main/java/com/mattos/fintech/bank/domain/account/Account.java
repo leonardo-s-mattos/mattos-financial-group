@@ -3,29 +3,34 @@ package com.mattos.fintech.bank.domain.account;
 import com.google.common.base.Objects;
 import com.google.common.base.Strings;
 import com.mattos.fintech.bank.domain.holder.AccountHolder;
-import org.apache.commons.lang.StringUtils;
+import com.mattos.fintech.bank.domain.transaction.Transaction;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayDeque;
+import java.util.Optional;
+
+@Getter
+@SuperBuilder
+@ToString
+@NoArgsConstructor
 public abstract class Account {
 
-    private String accountNumber;
-    private AccountType accountType;
-    private AccountState state;
+    @Id
+    protected String accountNumber;
+    protected AccountType accountType;
+    protected AccountState state;
 
-    private String name;
-    private AccountHolder accountHolder;
+    protected String name;
+    protected AccountHolder accountHolder;
 
-    public Account(AccountType accountType, String name, AccountHolder accountHolder) {
-        this.accountType = accountType;
-        this.name = name;
-        this.accountHolder = accountHolder;
-    }
-
-    public Account(String accountNumber, AccountType accountType, String name, AccountHolder accountHolder) {
-        this.accountNumber = accountNumber;
-        this.accountType = accountType;
-        this.name = name;
-        this.accountHolder = accountHolder;
-    }
+    @Transient
+    protected ArrayDeque<Transaction> recentTransactions = new ArrayDeque<>();
 
     protected void withNumber(String accountNumber){
         this.accountNumber = accountNumber;
@@ -36,28 +41,8 @@ public abstract class Account {
         return this;
     }
 
-    public String getAccountNumber(){
-        return accountNumber;
-    }
-
     public String getLastFourDigits(){
         return Strings.repeat("*", accountNumber.length()-4) + accountNumber.substring(accountNumber.length()-4);
-    }
-
-    public AccountType getAccountType() {
-        return accountType;
-    }
-
-    public AccountState getState() {
-        return state;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public AccountHolder getAccountHolder() {
-        return accountHolder;
     }
 
     @Override
@@ -73,4 +58,12 @@ public abstract class Account {
     public int hashCode() {
         return Objects.hashCode(accountNumber, accountHolder);
     }
+
+    protected void addTransaction(Transaction newTransaction){
+        if(recentTransactions==null) recentTransactions = new ArrayDeque<>();
+        this.recentTransactions.addLast(newTransaction);
+        if(recentTransactions.size()==6) recentTransactions.pollFirst();
+
+    }
+
 }

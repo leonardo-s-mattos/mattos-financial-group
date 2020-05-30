@@ -4,6 +4,7 @@ import com.mattos.fintech.bank.domain.account.CreditCardAccount;
 import com.mattos.fintech.bank.output.adapter.mongo.CreditCardAccountReactiveRepository;
 import com.mattos.fintech.bank.output.port.CreditCardQueryPort;
 import com.mattos.fintech.bank.output.port.CreditCardAccountStatePort;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -13,29 +14,23 @@ public class CreditCardAccountRepository implements CreditCardAccountStatePort, 
 
     private CreditCardAccountReactiveRepository creditCardAccountReactiveRepo;
 
+    @Autowired
     public CreditCardAccountRepository(CreditCardAccountReactiveRepository creditCardAccountReactiveRepo) {
         this.creditCardAccountReactiveRepo = creditCardAccountReactiveRepo;
     }
 
     @Override
     public Mono<CreditCardAccount> create(CreditCardAccount account) {
-        return creditCardAccountReactiveRepo.insert(AccountEntity.fromCreditCardAccount(account))
-                .map(savedAccount -> {
-                    return (CreditCardAccount)AccountEntity.fromAccountEntity(savedAccount);
-                });
+        return creditCardAccountReactiveRepo.save(account.withAccountNumber());
     }
 
     @Override
     public Mono<CreditCardAccount> update(CreditCardAccount account) {
-        return creditCardAccountReactiveRepo.save(AccountEntity.fromCreditCardAccount(account))
-                .map(savedAccount -> {
-                    return (CreditCardAccount)AccountEntity.fromAccountEntity(savedAccount);
-                });
+        return creditCardAccountReactiveRepo.save(account);
     }
 
     @Override
     public Flux<CreditCardAccount> listAllCreditCards(String accountHolderId) {
-        return creditCardAccountReactiveRepo.findAll()
-                .map(loadedEntity -> {return (CreditCardAccount)AccountEntity.fromAccountEntity(loadedEntity);});
+        return creditCardAccountReactiveRepo.findAll();
     }
 }

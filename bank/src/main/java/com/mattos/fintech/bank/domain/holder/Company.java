@@ -1,7 +1,14 @@
 package com.mattos.fintech.bank.domain.holder;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.Objects;
 
+@Document
+@Getter
+@EqualsAndHashCode
 public class Company extends AccountHolder {
     
     private String companyName;
@@ -11,21 +18,5 @@ public class Company extends AccountHolder {
         this.companyName = companyName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Company company = (Company) o;
-        return companyName.equals(company.companyName);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(companyName);
-    }
-
-    public String getCompanyName() {
-
-        return companyName;
-    }
 }

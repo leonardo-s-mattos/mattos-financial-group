@@ -21,6 +21,7 @@ public class AccountShould {
     public void generateNewAccounts_withCorrectAccountNumbers(IssuerCompany issuerCompany, String accountName, AccountHolder accountHolder){
         CreditCardAccount actual = (CreditCardAccount)AccountType.CREDIT_CARD.getInstance(accountName, accountHolder);
         actual.withIssuer(issuerCompany);
+        actual.withAccountNumber();
 
         assertNotNull(actual.getAccountNumber());
         assertThat(actual.getAccountNumber().length()).isEqualTo(16);
