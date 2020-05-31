@@ -40,7 +40,7 @@ public class QueryAccountsService implements GetAccount{
     public Flux<BankingAccountInfo> listAllOpenCheckingAccounts(String accountHolderId) {
         return checkingAccountQueryPort.listAllAccounts(accountHolderId)
                 .map( checking -> new BankingAccountInfo(checking.getAccountNumber(),
-                        checking.getLastFourDigits(), checking.getCurrentBalance()));
+                        checking.getLastFourDigits(), checking.getCurrentBalance(), checking.getAccountType().name()));
     }
 
     @Override
@@ -48,6 +48,7 @@ public class QueryAccountsService implements GetAccount{
         return savingsAccountQueryPort.listAllAccounts(accountHolderId)
                 .map( savings -> new BankingAccountInfo(savings.getAccountNumber(),
                         savings.getLastFourDigits(),
-                        savings.getCurrentBalance()));
+                        savings.getCurrentBalance(),
+                        savings.getAccountType().name()));
     }
 }

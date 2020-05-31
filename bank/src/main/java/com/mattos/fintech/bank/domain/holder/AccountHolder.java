@@ -15,6 +15,16 @@ public class AccountHolder {
     protected String holderType;
     protected Address billingAddress;
 
+    public AccountHolder(){
+        super();
+    }
+
+    public AccountHolder(String taxIdNumber, String holderType, Address billingAddress) {
+        this.taxIdNumber = taxIdNumber;
+        this.holderType = holderType;
+        this.billingAddress = billingAddress;
+    }
+
     public AccountHolder(String taxIdNumber, String holderType){
         this.taxIdNumber = taxIdNumber;
         this.holderType = holderType;

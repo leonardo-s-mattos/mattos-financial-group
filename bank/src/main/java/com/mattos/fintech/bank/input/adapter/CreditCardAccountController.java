@@ -5,6 +5,8 @@ import com.mattos.fintech.bank.domain.account.CreditCardAccount;
 import com.mattos.fintech.bank.input.query.port.CreditCardInfo;
 import com.mattos.fintech.bank.input.usecase.port.CreditCardRequestInfo;
 import com.mattos.fintech.bank.input.usecase.port.OpenAccount;
+import com.mattos.fintech.bank.input.usecase.port.PayCreditCard;
+import com.mattos.fintech.bank.input.usecase.port.TransactionRequestInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,15 +16,17 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/accounts")
-public class AccountController {
+public class CreditCardAccountController {
 
     private final OpenAccount openAccountPort;
     private final QueryAccountsService queryAccountsPort;
+    private final PayCreditCard payCreditCardPort;
 
     @Autowired
-    public AccountController(OpenAccount openAccountPort, QueryAccountsService queryAccountsPort) {
+    public CreditCardAccountController(OpenAccount openAccountPort, QueryAccountsService queryAccountsPort, PayCreditCard payCreditCardPort) {
         this.openAccountPort = openAccountPort;
         this.queryAccountsPort = queryAccountsPort;
+        this.payCreditCardPort = payCreditCardPort;
     }
 
     @PostMapping(path="/creditcards")
@@ -35,5 +39,12 @@ public class AccountController {
     public Flux<CreditCardInfo> listAll( @RequestParam String accountHolderId) {
         return queryAccountsPort.listAllOpenCards(accountHolderId);
     }
+
+    @PostMapping(path="/creditcards/payment")
+    public Mono<ResponseEntity<String>> pay(@RequestBody TransactionRequestInfo requestInfo) {
+        return payCreditCardPort.pay(Mono.just(requestInfo))
+                .map(savedTransaction -> new ResponseEntity<>(savedTransaction, HttpStatus.CREATED));
+    }
+
 
 }

@@ -33,4 +33,9 @@ public class CreditCardAccountRepository implements CreditCardAccountStatePort, 
     public Flux<CreditCardAccount> listAllCreditCards(String accountHolderId) {
         return creditCardAccountReactiveRepo.findAll();
     }
+
+    @Override
+    public Mono<CreditCardAccount> findById(String accountNumber) {
+        return creditCardAccountReactiveRepo.findById(accountNumber);
+    }
 }

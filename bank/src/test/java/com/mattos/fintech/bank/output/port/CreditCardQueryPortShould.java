@@ -43,13 +43,7 @@ public class CreditCardQueryPortShould {
     @Test
     void listAllCreditCards_fromAGivenAccountHolder() {
 
-        CreditCardAccount stubCreditCardAccount = givenAnAccountHolderId("12345");
-
-        Mono<CreditCardAccount> actualAccountNumber = creditCardAccountRepository.create(stubCreditCardAccount);
-
-        StepVerifier.create(actualAccountNumber)
-                .expectNextMatches(created -> !created.getAccountNumber().isEmpty())
-                .verifyComplete();
+        Mono<CreditCardAccount> actualAccountNumber = givenOneCreditCardAccount();
 
         Flux<CreditCardAccount> actualList = creditCardAccountRepository.listAllCreditCards("12345");
 
@@ -57,6 +51,33 @@ public class CreditCardQueryPortShould {
         Assertions.assertNotNull(actualList);
         StepVerifier.create(actualAccountNumber)
                 .expectNextMatches(created -> created.getAccountHolder().getTaxIdNumber().equals("12345"))
+                .verifyComplete();
+
+    }
+
+    private Mono<CreditCardAccount> givenOneCreditCardAccount() {
+        CreditCardAccount stubCreditCardAccount = givenAnAccountHolderId("12345");
+
+        Mono<CreditCardAccount> actualAccountNumber = creditCardAccountRepository.create(stubCreditCardAccount);
+
+        StepVerifier.create(actualAccountNumber)
+                .expectNextMatches(created -> !created.getAccountNumber().isEmpty())
+                .verifyComplete();
+        return actualAccountNumber;
+    }
+
+    @Test
+    void retrieveAccountById(){
+        // given
+        final String givenAccountNumber = givenOneCreditCardAccount().block().getAccountNumber();
+
+        //when
+        Mono<CreditCardAccount> actualAccount = creditCardAccountRepository.findById(givenAccountNumber);
+
+        //then
+        Assertions.assertNotNull(actualAccount);
+        StepVerifier.create(actualAccount)
+                .expectNextMatches(created -> created.getAccountNumber().equals(givenAccountNumber))
                 .verifyComplete();
 
     }
