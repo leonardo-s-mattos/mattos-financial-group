@@ -50,7 +50,7 @@ public class PayCreditCardService implements PayCreditCard {
                         throw new InvalidTransactionRequestException("There was an error registering the Credit Card payment of number " + account.getLastFourDigits());
                     }
 
-                    newPendingCreditCardPayments = Flux.just(tx.withId()).publish();
+                    newPendingCreditCardPayments.just(tx.withId()).publish();
 
                     return tx.getTransactionId();
                 }))

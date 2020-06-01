@@ -30,10 +30,11 @@ public class QueryAccountsService implements GetAccount{
     @Override
     public Flux<CreditCardInfo> listAllOpenCards(String accountHolderId) {
         return creditCardPort.listAllCreditCards(accountHolderId)
-                .map( creditCard -> new CreditCardInfo(creditCard.getAccountNumber(),
-                        creditCard.getLastFourDigits(),
-                        creditCard.getGoodThroughMonth(),
-                        creditCard.getGoodThroughYear()));
+                .map( creditCard ->  CreditCardInfo.builder().creditCardNumber(creditCard.getAccountNumber()).
+                        creditCardLastDigits(creditCard.getLastFourDigits()).
+                        goodThoughMonth(creditCard.getGoodThroughMonth()).
+                        goodThoughMonth(creditCard.getGoodThroughYear()).
+                        currentBalance(creditCard.getCurrentBalance()).build());
     }
 
     @Override

@@ -25,12 +25,12 @@ public class NewTransactionListener implements Subscriber<Transaction> {
 
     @Override
     public void onSubscribe(Subscription subscription) {
-        log.info("Save new transaction");
+
     }
 
     @Override
     public void onNext(Transaction transaction) {
-
+        log.info("Save new transaction");
     }
 
     @Override
