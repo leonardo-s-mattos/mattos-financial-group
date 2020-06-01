@@ -46,5 +46,11 @@ public class CreditCardAccountController {
                 .map(savedTransaction -> new ResponseEntity<>(savedTransaction, HttpStatus.CREATED));
     }
 
+    @PostMapping(path="/creditcards/payment/cancel")
+    public Mono<ResponseEntity<String>> revert(@RequestBody TransactionRequestInfo requestInfo) {
+        return payCreditCardPort.revert(Mono.just(requestInfo))
+                .map(savedTransaction -> new ResponseEntity<>(savedTransaction, HttpStatus.CREATED));
+    }
+
 
 }

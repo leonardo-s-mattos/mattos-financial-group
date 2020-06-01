@@ -34,7 +34,9 @@ public class QueryAccountsService implements GetAccount{
                         creditCardLastDigits(creditCard.getLastFourDigits()).
                         goodThoughMonth(creditCard.getGoodThroughMonth()).
                         goodThoughMonth(creditCard.getGoodThroughYear()).
-                        currentBalance(creditCard.getCurrentBalance()).build());
+                        currentBalance(creditCard.getCurrentBalance()).
+                        limitAmount(creditCard.getLimitAmount()).
+                        ccvCode(creditCard.getCcvCode()).build());
     }
 
     @Override

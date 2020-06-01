@@ -6,6 +6,8 @@ import com.mattos.fintech.bank.domain.holder.AccountHolder;
 import com.mattos.fintech.bank.domain.holder.Person;
 import com.mattos.fintech.bank.input.usecase.port.CreditCardRequestInfo;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Random;
 
 import static com.mattos.fintech.bank.domain.account.AccountType.CREDIT_CARD;
@@ -21,8 +23,13 @@ public class CreditCardAccountBuilder extends AccountBuilder {
                         request.getCountry(),
                         request.getZipCode());
 
-        return ((CreditCardAccount)CREDIT_CARD.getInstance(request.getAccountName(), accountHolder))
-                .withIssuer(IssuerCompany.valueOf(request.getIssuerCompany()));
+        return CreditCardAccount.builder().currentBalance(BigDecimal.ZERO)
+                .accountHolder(accountHolder)
+                .accountType(CREDIT_CARD).name(request.getAccountName()).goodThroughMonth(LocalDate.now().getYear() + 4)
+                .goodThroughMonth(LocalDate.now().getMonthValue())
+                .ccvCode(new Random().nextInt(1000)).limitAmount(BigDecimal.valueOf(5000L))
+                .issuerCompany(IssuerCompany.valueOf(request.getIssuerCompany()))
+                .build();
     }
 
 }

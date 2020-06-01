@@ -17,7 +17,9 @@ public class CreditCardInfo {
     private String creditCardLastDigits;
     private Integer goodThoughMonth;
     private Integer goodThoughYear;
+    private Integer ccvCode;
     private BigDecimal currentBalance;
+    private BigDecimal limitAmount;
     private List<Transaction> latesTransactions;
 
 

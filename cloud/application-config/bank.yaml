@@ -8,7 +8,26 @@ spring:
       database: bank-database
       username: admin
       password: password
-
+  cloud:
+    stream:
+      bindings:
+        newTransactionNotification:
+          destination: queue.transaction.events
+          binder: docker_rabbit
+        newTransactionProcess:
+          destination: queue.transaction.events.process
+          binder: docker_rabbit
+      binders:
+        docker_rabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: rabbit
+                port: 5672
+                username: user
+                password: password
+                virtual-host: /
 server:
   port: 8083
 
