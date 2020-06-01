@@ -14,7 +14,7 @@ public class TransactionEvents {
         @Input(INPUT)
         MessageChannel input();
 
-        @Output
+        @Output(OUTPUT)
         MessageChannel output();
 
     }
