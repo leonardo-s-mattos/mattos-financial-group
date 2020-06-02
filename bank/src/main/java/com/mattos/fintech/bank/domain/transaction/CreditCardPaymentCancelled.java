@@ -1,6 +1,9 @@
 package com.mattos.fintech.bank.domain.transaction;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @Getter
@@ -8,6 +11,6 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @ToString
 @AllArgsConstructor
-public class CreditCardPayment extends Transaction {
+public class CreditCardPaymentCancelled extends Transaction {
 
 }

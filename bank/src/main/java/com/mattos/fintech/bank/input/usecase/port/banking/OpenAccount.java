@@ -1,4 +1,4 @@
-package com.mattos.fintech.bank.input.usecase.port;
+package com.mattos.fintech.bank.input.usecase.port.banking;
 
 import reactor.core.publisher.Mono;
 

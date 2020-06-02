@@ -1,12 +1,10 @@
-package com.mattos.fintech.bank.application.service;
+package com.mattos.fintech.bank.application.service.crud;
 
+import com.mattos.fintech.bank.application.service.crud.QueryAccountsService;
 import com.mattos.fintech.bank.domain.account.*;
 import com.mattos.fintech.bank.domain.holder.AccountHolder;
-import com.mattos.fintech.bank.input.query.port.BankingAccountInfo;
 import com.mattos.fintech.bank.input.query.port.CreditCardInfo;
-import com.mattos.fintech.bank.input.usecase.port.CreditCardRequestInfo;
 import com.mattos.fintech.bank.output.port.CheckingAccountQueryPort;
-import com.mattos.fintech.bank.output.port.CreditCardAccountStatePort;
 import com.mattos.fintech.bank.output.port.CreditCardQueryPort;
 import com.mattos.fintech.bank.output.port.SavingsAccountQueryPort;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +12,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.stream.Stream;

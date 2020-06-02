@@ -12,10 +12,10 @@ spring:
     stream:
       bindings:
         newTransactionNotification:
-          destination: queue.transaction.events
+          destination: queue.new.transaction.events
           binder: docker_rabbit
-        newTransactionProcess:
-          destination: queue.transaction.events.process
+        loggedTransactionNotification:
+          destination: queue.logged.transaction.events
           binder: docker_rabbit
       binders:
         docker_rabbit:

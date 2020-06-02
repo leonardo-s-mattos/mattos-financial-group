@@ -1,10 +1,9 @@
 package com.mattos.fintech.bank.domain.account.builder;
 
 import com.mattos.fintech.bank.domain.account.CheckingAccount;
-import com.mattos.fintech.bank.domain.account.SavingsAccount;
 import com.mattos.fintech.bank.domain.holder.AccountHolder;
 import com.mattos.fintech.bank.domain.holder.Person;
-import com.mattos.fintech.bank.input.usecase.port.BankingAccountRequestInfo;
+import com.mattos.fintech.bank.input.usecase.port.banking.BankingAccountRequestInfo;
 
 import static com.mattos.fintech.bank.domain.account.AccountType.CHECKING;
 

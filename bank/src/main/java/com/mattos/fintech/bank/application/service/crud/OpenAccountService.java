@@ -1,16 +1,13 @@
-package com.mattos.fintech.bank.application.service;
+package com.mattos.fintech.bank.application.service.crud;
 
 import com.mattos.fintech.bank.domain.account.*;
 import com.mattos.fintech.bank.domain.account.builder.AccountBuilder;
 import com.mattos.fintech.bank.domain.account.builder.CheckingAccountBuilder;
 import com.mattos.fintech.bank.domain.account.builder.CreditCardAccountBuilder;
 import com.mattos.fintech.bank.domain.account.builder.SavingsAccountBuilder;
-import com.mattos.fintech.bank.domain.holder.AccountHolder;
-import com.mattos.fintech.bank.domain.holder.Person;
-import com.mattos.fintech.bank.input.query.port.BankingAccountInfo;
-import com.mattos.fintech.bank.input.usecase.port.BankingAccountRequestInfo;
-import com.mattos.fintech.bank.input.usecase.port.CreditCardRequestInfo;
-import com.mattos.fintech.bank.input.usecase.port.OpenAccount;
+import com.mattos.fintech.bank.input.usecase.port.banking.BankingAccountRequestInfo;
+import com.mattos.fintech.bank.input.usecase.port.banking.CreditCardRequestInfo;
+import com.mattos.fintech.bank.input.usecase.port.banking.OpenAccount;
 import com.mattos.fintech.bank.output.port.CheckingAccountStatePort;
 import com.mattos.fintech.bank.output.port.CreditCardAccountStatePort;
 import com.mattos.fintech.bank.output.port.SavingsAccountStatePort;

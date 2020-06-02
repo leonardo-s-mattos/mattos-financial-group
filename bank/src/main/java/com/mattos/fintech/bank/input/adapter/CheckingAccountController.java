@@ -1,9 +1,9 @@
 package com.mattos.fintech.bank.input.adapter;
 
-import com.mattos.fintech.bank.application.service.QueryAccountsService;
+import com.mattos.fintech.bank.application.service.crud.QueryAccountsService;
 import com.mattos.fintech.bank.input.query.port.BankingAccountInfo;
-import com.mattos.fintech.bank.input.usecase.port.BankingAccountRequestInfo;
-import com.mattos.fintech.bank.input.usecase.port.OpenAccount;
+import com.mattos.fintech.bank.input.usecase.port.banking.BankingAccountRequestInfo;
+import com.mattos.fintech.bank.input.usecase.port.banking.OpenAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

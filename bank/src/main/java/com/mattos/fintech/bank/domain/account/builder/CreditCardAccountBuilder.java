@@ -4,7 +4,7 @@ import com.mattos.fintech.bank.domain.account.CreditCardAccount;
 import com.mattos.fintech.bank.domain.account.IssuerCompany;
 import com.mattos.fintech.bank.domain.holder.AccountHolder;
 import com.mattos.fintech.bank.domain.holder.Person;
-import com.mattos.fintech.bank.input.usecase.port.CreditCardRequestInfo;
+import com.mattos.fintech.bank.input.usecase.port.banking.CreditCardRequestInfo;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

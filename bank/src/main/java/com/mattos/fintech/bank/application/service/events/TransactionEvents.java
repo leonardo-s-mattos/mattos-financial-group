@@ -8,14 +8,14 @@ public class TransactionEvents {
 
 
     public interface NewTransactionEvent {
-        String INPUT = "newTransactionNotification";
-        String OUTPUT = "newTransactionProcess";
+        String NEW_TRANSACTION = "newTransactionNotification";
+        String LOGGED_TRANSACTION_NOTIFICATION = "loggedTransactionNotification";
 
-        @Input(INPUT)
-        MessageChannel input();
+        @Input(NEW_TRANSACTION)
+        MessageChannel newTransactionNotification();
 
-        @Output(OUTPUT)
-        MessageChannel output();
+        @Output(LOGGED_TRANSACTION_NOTIFICATION)
+        MessageChannel loggedTransactionNotification();
 
     }
 

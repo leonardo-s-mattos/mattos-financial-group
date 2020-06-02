@@ -1,4 +1,4 @@
-package com.mattos.fintech.bank.application.service;
+package com.mattos.fintech.bank.application.service.banking;
 
 public class TransferServiceShould {
 

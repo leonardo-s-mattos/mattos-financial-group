@@ -1,4 +1,4 @@
-package com.mattos.fintech.bank.application.service;
+package com.mattos.fintech.bank.application.service.crud;
 
 import com.mattos.fintech.bank.input.query.port.BankingAccountInfo;
 import com.mattos.fintech.bank.input.query.port.CreditCardInfo;

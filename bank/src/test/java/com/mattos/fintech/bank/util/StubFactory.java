@@ -36,11 +36,11 @@ public class StubFactory {
     }
 
     public static DepositTransaction stubDeposit(BigDecimal amount, LocalDate depositDate, String comment, CheckingAccount account) {
-        return DepositTransaction.builder().transactionDate(depositDate).amount(amount).comment(comment).targetAccount(account).build();
+        return DepositTransaction.builder().transactionDate(depositDate).amount(amount).comment(comment).targetAccount(account.getAccountNumber()).build();
     }
 
     public static WithdrawTransaction stubWithdraw(BigDecimal amount, LocalDate depositDate, String comment, CheckingAccount account) {
-        return WithdrawTransaction.builder().transactionDate(depositDate).amount(amount).comment(comment).targetAccount(account).build();
+        return WithdrawTransaction.builder().transactionDate(depositDate).amount(amount).comment(comment).targetAccount(account.getAccountNumber()).build();
     }
 
     public static SavingsAccount stubSavingsAccount(String taxIdNumber, String stubnumber, String line1, String city, String state, String country, String zipCode, String name, BigDecimal balance, AccountState accountState) {
@@ -51,10 +51,10 @@ public class StubFactory {
     }
 
     public static DepositTransaction stubDeposit(BigDecimal amount, LocalDate depositDate, String comment, SavingsAccount account) {
-        return DepositTransaction.builder().transactionDate(depositDate).amount(amount).comment(comment).targetAccount(account).build();
+        return DepositTransaction.builder().transactionDate(depositDate).amount(amount).comment(comment).targetAccount(account.getAccountNumber()).build();
     }
 
     public static WithdrawTransaction stubWithdraw(BigDecimal amount, LocalDate depositDate, String comment, SavingsAccount account) {
-        return WithdrawTransaction.builder().transactionDate(depositDate).amount(amount).comment(comment).targetAccount(account).build();
+        return WithdrawTransaction.builder().transactionDate(depositDate).amount(amount).comment(comment).targetAccount(account.getAccountNumber()).build();
     }
 }

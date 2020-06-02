@@ -1,30 +1,24 @@
-package com.mattos.fintech.bank.application.service;
+package com.mattos.fintech.bank.application.service.crud;
 
 import com.mattos.fintech.bank.domain.account.*;
-import com.mattos.fintech.bank.domain.holder.AccountHolder;
-import com.mattos.fintech.bank.input.usecase.port.BankingAccountRequestInfo;
-import com.mattos.fintech.bank.input.usecase.port.CreditCardRequestInfo;
+import com.mattos.fintech.bank.input.usecase.port.banking.BankingAccountRequestInfo;
+import com.mattos.fintech.bank.input.usecase.port.banking.CreditCardRequestInfo;
 import com.mattos.fintech.bank.output.port.CheckingAccountStatePort;
 import com.mattos.fintech.bank.output.port.CreditCardAccountStatePort;
 import com.mattos.fintech.bank.output.port.SavingsAccountStatePort;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.platform.commons.util.StringUtils;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.math.BigDecimal;
 import java.util.stream.Stream;
 
-import static com.mattos.fintech.bank.domain.account.AccountState.CLOSED;
 import static com.mattos.fintech.bank.domain.account.AccountState.OPEN;
 import static com.mattos.fintech.bank.util.StubFactory.*;
 import static java.math.BigDecimal.ZERO;
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 public class OpenAccountServiceShould {
 
