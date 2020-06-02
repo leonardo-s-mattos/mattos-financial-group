@@ -1,5 +1,6 @@
 package com.mattos.fintech.bank.input.query.port;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.mattos.fintech.bank.domain.transaction.Transaction;
 import lombok.*;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CreditCardInfo {
 
     private String creditCardNumber;

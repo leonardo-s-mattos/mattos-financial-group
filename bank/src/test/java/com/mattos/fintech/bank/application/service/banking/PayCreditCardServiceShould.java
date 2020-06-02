@@ -1,12 +1,13 @@
 package com.mattos.fintech.bank.application.service.banking;
 
-import com.mattos.fintech.bank.application.service.events.TransactionEvents;
 import com.mattos.fintech.bank.domain.account.CreditCardAccount;
 import com.mattos.fintech.bank.domain.transaction.CreditCardPayment;
 import com.mattos.fintech.bank.domain.transaction.Transaction;
+import com.mattos.fintech.bank.domain.transaction.TransactionType;
 import com.mattos.fintech.bank.input.usecase.port.events.TransactionRequestInfo;
 import com.mattos.fintech.bank.output.port.CreditCardAccountStatePort;
 import com.mattos.fintech.bank.output.port.CreditCardQueryPort;
+import com.mattos.fintech.bank.output.port.TransactionLogPort;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -24,8 +25,7 @@ public class PayCreditCardServiceShould {
 
     CreditCardQueryPort mockQueryPort;
     CreditCardAccountStatePort mockStatePort;
-
-    TransactionEvents.NewTransactionEvent mockProcessor;
+    private TransactionLogPort mockTransactionLogPort;
 
     PayCreditCardService target;
 
@@ -34,32 +34,36 @@ public class PayCreditCardServiceShould {
 
         mockQueryPort = mock(CreditCardQueryPort.class);
         mockStatePort = mock(CreditCardAccountStatePort.class);
+        mockTransactionLogPort = mock(TransactionLogPort.class);
 
-        mockProcessor = mock(TransactionEvents.NewTransactionEvent.class);
-
-        target = new PayCreditCardService(mockQueryPort, mockStatePort);
+        target = new PayCreditCardService(mockQueryPort, mockStatePort, mockTransactionLogPort);
     }
 
     @Test
     void reduceBalance_withAmountPaid(){
 
         //given
-        CreditCardPayment givenTransactionInfo = CreditCardPayment.builder().
+        TransactionRequestInfo givenTransactionInfo = TransactionRequestInfo.builder().
                 transactionDate(LocalDate.of(2020, 04, 20)).
-                amount(BigDecimal.TEN).targetAccount("1234").build();
+                amount(BigDecimal.TEN).targetAccountNumber("1234").
+                transactionType(TransactionType.CREDIT_CARD_PAYMENT).build();
+
 
         CreditCardAccount mockAccount = mock(CreditCardAccount.class);
 
         when(mockQueryPort.findById("1234")).thenReturn(Mono.just(mockAccount));
         when(mockStatePort.update(mockAccount)).thenReturn(Mono.just(mockAccount));
         when(mockAccount.pay(any(CreditCardPayment.class))).thenReturn(true);
+        Transaction mockTransaction = CreditCardPayment.builder().build();
+        //when(mockTransactionLogPort.log(any(CreditCardPayment.class))).thenReturn(mockTransaction);
+
 
         //when
-        Flux<String> actualTransactionCode = target.pay(Flux.just(givenTransactionInfo));
+        Mono<String> actualTransactionCode = target.pay(Mono.just(givenTransactionInfo));
 
         //then
         assertNotNull(actualTransactionCode);
-        assertTrue(!actualTransactionCode.blockFirst().isEmpty());
+        assertTrue(!actualTransactionCode.block().isEmpty());
         verify(mockStatePort.update(mockAccount), times(1));
         when(mockAccount.pay(any(CreditCardPayment.class))).thenReturn(true);
 
@@ -69,22 +73,25 @@ public class PayCreditCardServiceShould {
     void handlePaymentCancellation(){
 
         //given
-        CreditCardPayment givenTransactionInfo = CreditCardPayment.builder().
+        TransactionRequestInfo givenTransactionInfo = TransactionRequestInfo.builder().
                 transactionDate(LocalDate.of(2020, 04, 20)).
-                amount(BigDecimal.TEN).targetAccount("1234").build();
+                amount(BigDecimal.TEN).targetAccountNumber("1234").
+                transactionType(TransactionType.CREDIT_CARD_PAYMENT).build();
 
         CreditCardAccount mockAccount = mock(CreditCardAccount.class);
 
         when(mockQueryPort.findById("1234")).thenReturn(Mono.just(mockAccount));
         when(mockStatePort.update(mockAccount)).thenReturn(Mono.just(mockAccount));
         when(mockAccount.revertPay(any(CreditCardPayment.class))).thenReturn(true);
+        CreditCardPayment mockTransaction = CreditCardPayment.builder().build();
+        //when(mockTransactionLogPort.log(any(CreditCardPayment.class))).thenReturn(mockTransaction);
 
         //when
-        Flux<String> actualTransactionCode = target.revert(Flux.just(givenTransactionInfo));
+        Mono<String> actualTransactionCode = target.revert(Mono.just(givenTransactionInfo));
 
         //then
         assertNotNull(actualTransactionCode);
-        assertTrue(!actualTransactionCode.blockFirst().isEmpty());
+        assertTrue(!actualTransactionCode.block().isEmpty());
         verify(mockStatePort.update(mockAccount), times(1));
         verify(mockAccount.revertPay(any(CreditCardPayment.class)), times(1));
 

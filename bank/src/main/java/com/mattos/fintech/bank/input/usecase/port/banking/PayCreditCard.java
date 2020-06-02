@@ -1,13 +1,15 @@
 package com.mattos.fintech.bank.input.usecase.port.banking;
 
 import com.mattos.fintech.bank.domain.transaction.Transaction;
-import reactor.core.publisher.Flux;
+import com.mattos.fintech.bank.input.usecase.port.events.TransactionRequestInfo;
+import reactor.core.publisher.Mono;
 
 public interface PayCreditCard {
 
-    Flux<String> pay(Flux<Transaction> transactionRequest);
-    Flux<String> revert(Flux<Transaction> transactionRequest);
-    Flux<String> post(Flux<Transaction> transactionRequest);
+    Mono<String> pay(Mono<TransactionRequestInfo> transactionRequest);
+    Mono<String> revert(Mono<TransactionRequestInfo> transactionRequest);
+    Mono<String> post(Mono<TransactionRequestInfo> transactionRequest);
+
 
 
 }

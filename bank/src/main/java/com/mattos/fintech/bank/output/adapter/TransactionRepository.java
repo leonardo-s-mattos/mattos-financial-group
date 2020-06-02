@@ -18,6 +18,10 @@ public class TransactionRepository implements TransactionLogPort, TransactionQue
 
     private TransactionReactiveRepository transactionReactiveRepository;
 
+    @Autowired
+    public TransactionRepository(TransactionReactiveRepository transactionReactiveRepository) {
+        this.transactionReactiveRepository = transactionReactiveRepository;
+    }
 
     @Override
     public Mono<Transaction> log(Transaction tx) {

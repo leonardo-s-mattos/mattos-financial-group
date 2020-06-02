@@ -1,6 +1,6 @@
-package com.mattos.fintech.bank.input.usecase.port.events;
+package com.mattos.fintech.bank.input.query.port;
 
-import com.mattos.fintech.bank.domain.transaction.Transaction;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.mattos.fintech.bank.domain.transaction.TransactionType;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Component
 @Getter
@@ -17,7 +16,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class TransactionRequestInfo {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class TransactionInfo {
 
     String transactionId;
     LocalDate transactionDate;
