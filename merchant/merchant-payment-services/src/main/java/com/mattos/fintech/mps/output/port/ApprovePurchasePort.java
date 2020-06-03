@@ -1,10 +1,10 @@
 package com.mattos.fintech.mps.output.port;
 
 import com.mattos.fintech.mps.domain.CreditCardPurchase;
-import reactor.core.publisher.Mono;
+import com.mattos.fintech.mps.input.usecase.port.PurchaseInfo;
 
 public interface ApprovePurchasePort {
 
-    void requestPurchaseAuthorization(CreditCardPurchase purchase);
-    Mono<String> informConfirmedPurchase(CreditCardPurchase purchase);
+    void requestPurchaseAuthorization(PurchaseInfo purchase);
+    void informConfirmedPurchase(CreditCardPurchase purchase);
 }

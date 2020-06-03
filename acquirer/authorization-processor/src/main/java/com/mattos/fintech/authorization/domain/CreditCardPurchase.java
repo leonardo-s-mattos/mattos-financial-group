@@ -1,4 +1,4 @@
-package com.mattos.fintech.mps.domain;
+package com.mattos.fintech.authorization.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

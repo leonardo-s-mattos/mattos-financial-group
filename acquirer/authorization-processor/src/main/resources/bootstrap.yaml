@@ -2,10 +2,10 @@ server:
   port: 9192
 spring:
   application:
-    name: merchant-payment-service
+    name: acquirer-authorization-processor
   cloud:
     config:
-      name: merchant-payment-service
+      name: acquirer-authorization-processor
       discovery:
         service-id: config
         enabled: true

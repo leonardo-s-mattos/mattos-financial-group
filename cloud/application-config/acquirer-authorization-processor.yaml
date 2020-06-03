@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: sample-spring-redis
+  redis:
+    host: redis
+  cloud:
+    stream:
+      bindings:
+        authorization_inquiry:
+          destination: queue.authorization.inquiry.events
+          binder: docker_rabbit
+        authorization_request:
+          destination: queue.authorization.request.events
+          binder: docker_rabbit
+      binders:
+        docker_rabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: rabbit
+                port: 5672
+                #username: guest
+                #password: guest
+                virtual-host: /
+server:
+  port: 8085
+
+eureka:
+  client:
+    region: default
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

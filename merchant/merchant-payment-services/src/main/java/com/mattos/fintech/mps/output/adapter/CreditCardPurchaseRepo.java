@@ -4,6 +4,7 @@ import com.mattos.fintech.mps.domain.CreditCardPurchase;
 import com.mattos.fintech.mps.output.adapter.mongo.CreditCardPurchaseRxRepo;
 import com.mattos.fintech.mps.output.port.CreditCardPurchaseQueryPort;
 import com.mattos.fintech.mps.output.port.CreditCardPurchaseStatePort;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
@@ -14,6 +15,10 @@ public class CreditCardPurchaseRepo implements CreditCardPurchaseStatePort, Cred
 
     private CreditCardPurchaseRxRepo creditCardPurchaseRxRepo;
 
+    @Autowired
+    public CreditCardPurchaseRepo(CreditCardPurchaseRxRepo creditCardPurchaseRxRepo) {
+        this.creditCardPurchaseRxRepo = creditCardPurchaseRxRepo;
+    }
 
     @Override
     public Flux<CreditCardPurchase> listAll() {

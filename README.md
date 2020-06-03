@@ -8,3 +8,7 @@ $ docker run -d --hostname rabbit --name my-rabbit -e RABBITMQ_DEFAULT_USER=user
 and mongodb :
 
 $ docker run -d --name mongo -p 27017:27017 mongo
+
+and redis :
+
+$ docker run -d --name redis -p 6379:6379 redis

@@ -1,14 +1,11 @@
 spring:
   application:
-    name: mps
+    name: merchant-payment-service
   cloud:
     stream:
       bindings:
-        newTransactionNotification:
-          destination: queue.new.transaction.events
-          binder: docker_rabbit
-        loggedTransactionNotification:
-          destination: queue.logged.transaction.events
+        authorization_inquiry:
+          destination: queue.authorization.inquiry.events
           binder: docker_rabbit
       binders:
         docker_rabbit:
