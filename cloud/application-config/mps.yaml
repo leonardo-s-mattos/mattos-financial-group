@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: mps
+  cloud:
+    stream:
+      bindings:
+        newTransactionNotification:
+          destination: queue.new.transaction.events
+          binder: docker_rabbit
+        loggedTransactionNotification:
+          destination: queue.logged.transaction.events
+          binder: docker_rabbit
+      binders:
+        docker_rabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: rabbit
+                port: 5672
+                #username: guest
+                #password: guest
+                virtual-host: /
+server:
+  port: 8084
+
+eureka:
+  client:
+    region: default
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

@@ -10,6 +10,9 @@
         <module>cloud/api-gateway-server</module>
         <module>cloud/zipkin-server</module>
         <module>bank</module>
+        <module>network/data-flow-server</module>
+        <module>network/data-flow-shell</module>
+        <module>merchant/merchant-payment-services</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

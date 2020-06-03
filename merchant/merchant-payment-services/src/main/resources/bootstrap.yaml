@@ -1,0 +1,17 @@
+server:
+  port: 9192
+spring:
+  application:
+    name: mps
+  cloud:
+    config:
+      name: merchant-payment-service
+      discovery:
+        service-id: config
+        enabled: true
+eureka:
+  client:
+    region: default
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
