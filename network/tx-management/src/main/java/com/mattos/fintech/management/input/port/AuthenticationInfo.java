@@ -6,16 +6,18 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Getter
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TransactionInfo {
+public class AuthenticationInfo {
 
         private String creditCardNumber;
-        private BigDecimal amount;
-        private TransactionStatus purchaseStatus;
         private String originationId;
+        private Integer ccvCode;
+        private Integer zipCode;
+        private Integer goodThroughYear;
+        private Integer goodThroughMonth;
+        private String status;
 
 }

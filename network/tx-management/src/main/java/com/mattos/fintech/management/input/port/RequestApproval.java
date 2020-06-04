@@ -4,5 +4,5 @@ import reactor.core.publisher.Mono;
 
 public interface RequestApproval {
 
-    Mono<PurchaseApprovalCommand> forwardApprovalRequest(Mono<PurchaseApprovalCommand> command);
+    Mono<TransactionInfo> forwardApprovalRequest(Mono<PurchaseApprovalCommand> command);
 }
