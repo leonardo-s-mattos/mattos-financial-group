@@ -12,6 +12,7 @@
         <module>bank</module>
         <module>network/data-flow-server</module>
         <module>network/data-flow-shell</module>
+        <module>network/tx-management</module>
         <module>merchant/merchant-payment-services</module>
         <module>acquirer/authorization-processor</module>
     </modules>

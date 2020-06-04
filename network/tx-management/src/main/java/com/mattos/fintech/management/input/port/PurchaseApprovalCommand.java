@@ -1,24 +1,18 @@
-package com.mattos.fintech.authorization.domain;
+package com.mattos.fintech.management.input.port;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.redis.core.RedisHash;
+import com.mattos.fintech.management.domain.TransactionStatus;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@RedisHash("purchaseInfo")
 @Getter
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode
-public class PurchaseInfo {
+public class PurchaseApprovalCommand {
 
-        @Id
         private String purchaseId;
         private String creditCardNumber;
         private Integer ccvCode;
@@ -26,10 +20,11 @@ public class PurchaseInfo {
         private Integer goodThroughYear;
         private Integer goodThroughMonth;
         private BigDecimal amount;
-        private PurchaseStatus purchaseStatus;
-        private IssuerCompany issuerCompany;
+        private TransactionStatus purchaseStatus;
         private LocalDateTime time;
         private String merchantId;
+        private String issuerBank;
+        private String acquirerBank;
 
         public void withPurchaseId(String purchaseId){
                 this.purchaseId = purchaseId;

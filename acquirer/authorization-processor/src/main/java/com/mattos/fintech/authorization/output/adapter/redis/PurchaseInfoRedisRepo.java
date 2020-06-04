@@ -11,10 +11,10 @@ import java.util.Optional;
 @Component
 public class PurchaseInfoRedisRepo implements PurchaseInfoCacheRepo {
 
-    private CrudRepository redisRepo;
+    private PurchaseInfoCrudRedisRepository redisRepo;
 
     @Autowired
-    public PurchaseInfoRedisRepo(CrudRepository<String, PurchaseInfo> redisRepo) {
+    public PurchaseInfoRedisRepo(PurchaseInfoCrudRedisRepository redisRepo) {
         this.redisRepo = redisRepo;
     }
 
