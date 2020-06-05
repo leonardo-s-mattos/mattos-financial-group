@@ -7,7 +7,7 @@ import org.springframework.messaging.SubscribableChannel;
 public interface Authorization {
 
     String AUTHORIZATION_REQUEST = "authorization_request";
-    String AUTHORIZATION_RESPONSE = "authorization_request";
+    String AUTHORIZATION_RESPONSE = "authorization_response";
     String TX_AUTHORIZATION_REQUEST = "tx_authorization_request";
     String TX_AUTHORIZATION_RESPONSE = "tx_authorization_response";
     String AUTHENTICATION_REQUEST = "authentication_request";

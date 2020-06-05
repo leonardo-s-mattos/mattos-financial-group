@@ -45,7 +45,7 @@ public class EventsListener {
     }
 
     @Transformer(inputChannel = Authorization.TX_AUTHORIZATION_RESPONSE,
-            outputChannel = Authorization.AUTHENTICATION_REQUEST)
+            outputChannel = Authorization.AUTHORIZATION_RESPONSE)
     public TransactionInfo processAuthorizationDeclined(TransactionInfo response) {
         return processAuthorizationResponsePort.transactionDeclined(response);
     }

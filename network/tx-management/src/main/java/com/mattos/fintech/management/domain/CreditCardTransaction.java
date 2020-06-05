@@ -36,4 +36,9 @@ public class CreditCardTransaction {
         return this;
     }
 
+    public CreditCardTransaction withStatus(TransactionStatus transactionStatus){
+        this.transactionStatus = transactionStatus;
+        return this;
+    }
+
 }

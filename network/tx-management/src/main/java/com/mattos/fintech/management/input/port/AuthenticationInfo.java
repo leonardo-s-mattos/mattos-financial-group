@@ -20,4 +20,16 @@ public class AuthenticationInfo {
         private Integer goodThroughMonth;
         private String status;
 
+        public static AuthenticationInfo fromPurchaseApprovalCommand(PurchaseApprovalCommand purchaseApprovalCommand){
+
+                return AuthenticationInfo.builder()
+                        .ccvCode(purchaseApprovalCommand.getCcvCode())
+                        .creditCardNumber(purchaseApprovalCommand.getCreditCardNumber())
+                        .goodThroughMonth(purchaseApprovalCommand.getGoodThroughMonth())
+                        .goodThroughYear(purchaseApprovalCommand.getGoodThroughYear())
+                        .originationId(purchaseApprovalCommand.getPurchaseId())
+                        .zipCode(purchaseApprovalCommand.getZipCode())
+                        .build();
+        }
+
 }

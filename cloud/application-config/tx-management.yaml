@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: tx-management
+  redis:
+    host: redis
+  cloud:
+    stream:
+      bindings:
+        authorization_request:
+          destination: queue.authorization.request.events
+          binder: docker_rabbit
+        authorization_response:
+          destination: queue.authorization.response.events
+          binder: docker_rabbit
+        tx_authorization_request:
+          destination: queue.txauthorization.request.events
+          binder: docker_rabbit
+        tx_authorization_response:
+            destination: queue.txauthorization.response.events
+            binder: docker_rabbit
+        authentication_request:
+          destination: queue.authentication_request.events
+          binder: docker_rabbit
+        authentication_response:
+            destination: queue.authentication_response.events
+            binder: docker_rabbit
+      binders:
+        docker_rabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: rabbit
+                port: 5672
+                #username: guest
+                #password: guest
+                virtual-host: /
+server:
+  port: 8086
+
+eureka:
+  client:
+    region: default
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

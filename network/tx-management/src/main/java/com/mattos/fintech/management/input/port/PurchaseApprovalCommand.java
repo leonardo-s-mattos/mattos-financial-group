@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.mattos.fintech.management.domain.TransactionStatus;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -11,8 +13,10 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@RedisHash("purchaseApproval")
 public class PurchaseApprovalCommand {
 
+        @Id
         private String purchaseId;
         private String creditCardNumber;
         private Integer ccvCode;

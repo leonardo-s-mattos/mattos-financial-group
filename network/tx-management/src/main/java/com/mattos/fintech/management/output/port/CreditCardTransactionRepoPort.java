@@ -9,4 +9,5 @@ public interface CreditCardTransactionRepoPort {
 
     Mono<CreditCardTransaction> save(CreditCardTransaction tx);
     Mono<CreditCardTransaction> findById(UUID id);
+    Mono<CreditCardTransaction> findByOriginationId(String originationId);
 }

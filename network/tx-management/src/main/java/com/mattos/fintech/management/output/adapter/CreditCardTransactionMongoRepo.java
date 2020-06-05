@@ -28,4 +28,9 @@ public class CreditCardTransactionMongoRepo implements CreditCardTransactionRepo
     public Mono<CreditCardTransaction> findById(UUID id) {
         return null;
     }
+
+    @Override
+    public Mono<CreditCardTransaction> findByOriginationId(String originationId) {
+        return mongoRxRepo.findByOriginationId(originationId);
+    }
 }
