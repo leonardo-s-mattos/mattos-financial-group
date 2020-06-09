@@ -7,6 +7,9 @@ spring:
         authorization_inquiry:
           destination: queue.authorization.inquiry.events
           binder: docker_rabbit
+        confirmed_purchase:
+          destination: queue.confirmed.purchase.events
+            binder: docker_rabbit
       binders:
         docker_rabbit:
           type: rabbit

@@ -21,7 +21,7 @@ public class RabbitMQConnector implements ApprovePurchasePort{
     }
 
     @Bean
-    @InboundChannelAdapter
+    @InboundChannelAdapter(value = Authorization.CONFIRMED_PURCHASE)
     MessageSource<CreditCardPurchase> sendConfirmedPurchase(CreditCardPurchase purchaseInfo){
         return () -> MessageBuilder.withPayload(purchaseInfo).build();
     }
