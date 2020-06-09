@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: authorization-service
+  redis:
+    host: redis
+  cloud:
+    stream:
+      bindings:
+        tx_authorization_request:
+          destination: queue.txauthorization.request.events
+          binder: docker_rabbit
+        tx_authorization_response:
+          destination: queue.txauthorization.response.events
+          binder: docker_rabbit
+      binders:
+        docker_rabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: rabbit
+                port: 5672
+                #username: guest
+                #password: guest
+                virtual-host: /
+server:
+  port: 8088
+
+eureka:
+  client:
+    region: default
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

@@ -9,7 +9,9 @@
         <module>cloud/eureka-server</module>
         <module>cloud/api-gateway-server</module>
         <module>cloud/zipkin-server</module>
-        <module>bank</module>
+        <module>issuer/bank</module>
+        <module>issuer/authentication-service</module>
+        <module>issuer/authorization-service</module>
         <module>network/data-flow-server</module>
         <module>network/data-flow-shell</module>
         <module>network/tx-management</module>

@@ -11,11 +11,11 @@ spring:
   cloud:
     stream:
       bindings:
-        newTransactionNotification:
-          destination: queue.new.transaction.events
+        tx_authorization_response:
+          destination: queue.txauthorization.response.events
           binder: docker_rabbit
-        loggedTransactionNotification:
-          destination: queue.logged.transaction.events
+        authentication_response:
+          destination: queue.authentication.response.events
           binder: docker_rabbit
       binders:
         docker_rabbit:

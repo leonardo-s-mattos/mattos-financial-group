@@ -1,0 +1,17 @@
+server:
+  port: 9193
+spring:
+  application:
+    name: authentication-service
+  cloud:
+    config:
+      name: authentication-service
+      discovery:
+        service-id: config
+        enabled: true
+eureka:
+  client:
+    region: default
+    registryFetchIntervalSeconds: 5
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

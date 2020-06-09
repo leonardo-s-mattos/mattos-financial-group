@@ -3,7 +3,6 @@ package com.mattos.fintech.authorization.output.adapter.redis;
 import com.mattos.fintech.authorization.domain.PurchaseInfo;
 import com.mattos.fintech.authorization.output.port.PurchaseInfoCacheRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
