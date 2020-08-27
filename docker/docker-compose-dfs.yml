@@ -1,24 +1,19 @@
 version: '3'
 
+# Configuration environment variables:
+# - DATAFLOW_VERSION and SKIPPER_VERSION specify what DataFlow and Skipper image versions to use.
+# - STREAM_APPS_URI and TASK_APPS_URI are used to specify what Stream and Task applications to pre-register.
+# - HOST_MOUNT_PATH and DOCKER_MOUNT_PATH are used to set the host and docker mount folders.
+#   If not set HOST_MOUNT_PATH defaults to the local host folder where the docker compose is being started.
+#   If not set DOCKER_MOUNT_PATH defaults to /root/scdf on dataflow-server and skipper containers.
+#   Example to mount the local Maven repository: HOST_MOUNT_PATH=~/.m2/repository/ DOCKER_MOUNT_PATH=/root/.m2  docker-compose up
+#
+# Exposed container ports:
+# - 9393:9393               - Data Flow server port (http://localhost:9393/dashboard)
+# - 7577:7577               - Skipper server port (http://localhost:7577/api)
+# - 20000-20105:20000-20105 - Port range for all deployed stream applications. That means you can reach the
+#                             application's actuator endpoints from your host machine.
 services:
-  mongo:
-    image: mongo
-    container_name: mongo
-    expose:
-      - "27017"
-  redis:
-    image: redis
-    container_name: redis
-    expose:
-      - "6379"
-
-  rabbitmq:
-    image: rabbitmq:3.7-management
-    container_name: rabbitmq
-    expose:
-      - "15672"
-      - "5672"
-
   mysql:
     image: mysql:5.7.25
     container_name: dataflow-mysql
@@ -29,20 +24,25 @@ services:
     expose:
       - 3306
 
+
+
   dataflow-server:
     image: springcloud/spring-cloud-dataflow-server:${DATAFLOW_VERSION:?DATAFLOW_VERSION is not set!}
     container_name: dataflow-server
     ports:
       - "9393:9393"
     environment:
-      - spring.cloud.dataflow.applicationProperties.stream.spring.rabbitmq.host=rabbitmq
+      - spring.cloud.dataflow.applicationProperties.stream.spring.cloud.stream.kafka.binder.brokers=PLAINTEXT://kafka-broker:9092
+      - spring.cloud.dataflow.applicationProperties.stream.spring.cloud.stream.kafka.streams.binder.brokers=PLAINTEXT://kafka-broker:9092
+      - spring.cloud.dataflow.applicationProperties.stream.spring.cloud.stream.kafka.binder.zkNodes=zookeeper:2181
+      - spring.cloud.dataflow.applicationProperties.stream.spring.cloud.stream.kafka.streams.binder.zkNodes=zookeeper:2181
       - spring.cloud.skipper.client.serverUri=http://skipper-server:7577/api
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/dataflow
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=rootpw
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.mariadb.jdbc.Driver
     depends_on:
-      - rabbitmq
+      - kafka-broker
     entrypoint: "./wait-for-it.sh mysql:3306 -- java -jar /maven/spring-cloud-dataflow-server.jar"
     volumes:
       - ${HOST_MOUNT_PATH:-.}:${DOCKER_MOUNT_PATH:-/root/scdf}
@@ -55,7 +55,7 @@ services:
     command: >
       /bin/sh -c "
         ./wait-for-it.sh -t 180 dataflow-server:9393;
-        wget -qO- 'http://dataflow-server:9393/apps' --post-data='uri=${STREAM_APPS_URI:-https://dataflow.spring.io/rabbitmq-maven-latest&force=true}';
+        wget -qO- 'http://dataflow-server:9393/apps' --post-data='uri=${STREAM_APPS_URI:-https://dataflow.spring.io/kafka-maven-latest&force=true}';
         echo 'Stream apps imported'
         wget -qO- 'http://dataflow-server:9393/apps' --post-data='uri=${TASK_APPS_URI:-https://dataflow.spring.io/task-maven-latest&force=true}';
         echo 'Task apps imported'"
